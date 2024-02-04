@@ -1,16 +1,16 @@
-# romberg_app
+# Romberg-test
+Una aplicacion para ayudar a los pacientes a realizar el test de Romberg
+#V...
 
-A new Flutter project.
+Building Specs:\n
+ Flutter SDK: 3.13.0\n
+ Dart SDK: 3.1.0\n
+ Android SDK: 31.0.0\n
+ Java Version: 17.0.8\n
 
-## Getting Started
+Authors:
 
-This project is a starting point for a Flutter application.
+ Joan Manuel Molina Gómez
 
-A few resources to get you started if this is your first Flutter project:
+ Eric Michel Villavicencio Reyes
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
