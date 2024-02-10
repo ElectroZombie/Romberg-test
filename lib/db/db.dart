@@ -1,5 +1,6 @@
 import 'dart:io' as io;
 import 'package:romberg_test/models/curve_point_model.dart';
+import 'package:romberg_test/models/curve_point_range_model.dart';
 import 'package:romberg_test/models/test_data_model.dart';
 import 'package:romberg_test/models/test_done_model.dart';
 import 'package:romberg_test/models/test_model.dart';
@@ -232,5 +233,40 @@ class DB {
     Database D = await _openDB();
     D.delete('value_range_data', where: 'value_range_id = ?', whereArgs: id);
     D.delete('value_range', where: 'value_range_id = ?', whereArgs: id);
+  }
+
+  static Future<ValueRangeModel> getDataRange(int id) async {
+    Database db = await _openDB();
+
+    ValueRangeModel valores = ValueRangeModel(
+        idValueRange: 1,
+        idTest: 1,
+        minimumAge: 1,
+        maximumAge: 1,
+        minimumWeight: 1,
+        maximunWeight: 1,
+        minimumHeight: 1,
+        maximumHeight: 1);
+    final List<Map<String, dynamic>> Q = await db.query("value_range_data",
+        where: 'id_value_range = ?', whereArgs: [id]);
+
+    for (var i = 0; i < Q.length; i++) {
+      valores.insertRangePoint(CurvePointRangeModel(
+          i: i,
+          gxi: Q[i]['gXi'],
+          gxri: Q[i]['gXR'],
+          gyi: Q[i]['gYi'],
+          gyri: Q[i]['gYR'],
+          gzi: Q[i]['gZi'],
+          gzri: Q[i]['gZR'],
+          axi: Q[i]['aXi'],
+          axri: Q[i]['aXR'],
+          ayi: Q[i]['aYi'],
+          ayri: Q[i]['aYR'],
+          azi: Q[i]['aZi'],
+          azri: Q[i]['aZR']));
+    }
+
+    return valores;
   }
 }

@@ -9,7 +9,9 @@ import 'package:romberg_test/frames/user.dart';
 import 'package:romberg_test/frames/user_data.dart';
 import 'package:romberg_test/frames/user_results.dart';
 import 'package:romberg_test/frames/romberg_test.dart';
+import 'package:romberg_test/models/test_data_model.dart';
 import 'package:romberg_test/models/user_model.dart';
+import 'package:romberg_test/models/value_range_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -46,7 +48,7 @@ class MainApp extends StatelessWidget {
         "/manage_user": (context) => ManageUser(),
         "/romberg_test": (context) => const RombergTest(UserModel),
         "/user_data": (context) => const UserData(UserModel),
-        "/user_results": (context) => const UserResults(UserModel),
+        "/user_results": (context) => const UserResults(List<int>),
         "/info": (context) => const Info()
       },
     );

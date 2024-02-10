@@ -185,7 +185,7 @@ class RombergTestState extends State<RombergTest> {
     return curvePoints;
   }
 
-  void startRecording(int timer) {
+  void startRecording(int timer) async {
     setState(() {
       _isRecording = true;
       xMinValue = null;
@@ -333,6 +333,10 @@ class RombergTestState extends State<RombergTest> {
     DB.insertDataTestDone(testData);
 
     exportPDF();
+    int idtestDone = await DB.getLastIdTestDone();
+    int idRange = await DB.getLastIdValueRange();
+    List<int> ids = [1, idRange, idtestDone];
+    Navigator.pushNamed(context, 'userResults', arguments: ids);
   }
 
   @override
