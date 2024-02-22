@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:romberg_test/db/initialize_db.dart';
+import 'package:romberg_test/frames/inf.dart';
 import 'package:romberg_test/frames/manage_user.dart';
 import 'package:romberg_test/frames/info.dart';
 import 'package:romberg_test/frames/main_frame.dart';
@@ -9,9 +10,7 @@ import 'package:romberg_test/frames/user.dart';
 import 'package:romberg_test/frames/user_data.dart';
 import 'package:romberg_test/frames/user_results.dart';
 import 'package:romberg_test/frames/romberg_test.dart';
-import 'package:romberg_test/models/test_data_model.dart';
 import 'package:romberg_test/models/user_model.dart';
-import 'package:romberg_test/models/value_range_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -49,7 +48,8 @@ class MainApp extends StatelessWidget {
         "/romberg_test": (context) => const RombergTest(UserModel),
         "/user_data": (context) => const UserData(UserModel),
         "/user_results": (context) => const UserResults(List<int>),
-        "/info": (context) => const Info()
+        "/info": (context) => Info(),
+        "/inf": (context) => Inf(int)
       },
     );
   }

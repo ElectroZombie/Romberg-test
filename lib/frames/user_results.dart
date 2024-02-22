@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:romberg_test/db/db.dart';
 import 'package:romberg_test/models/test_data_model.dart';
-import 'package:romberg_test/models/test_done_model.dart';
 import 'package:romberg_test/models/value_range_model.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:romberg_test/widgets/line_chart.dart';
 
 class UserResults extends StatelessWidget {
@@ -26,7 +24,7 @@ class UserResults extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<int> lista = ModalRoute.of(context)!.settings.arguments as List<int>;
-    int idUser = lista[0];
+    //int idUser = lista[0];
     int idValueRange = lista[1];
     int idTestDone = lista[2];
 
@@ -60,13 +58,22 @@ class UserResults extends StatelessWidget {
               max: 100.0,
             ),
             Row(
-              children: [lineChartAX(valores, datos)],
+              children: [
+                lineChartAX(valores, datos),
+                lineChartGX(valores, datos)
+              ],
             ),
             Row(
-              children: [],
+              children: [
+                lineChartAY(valores, datos),
+                lineChartGY(valores, datos)
+              ],
             ),
             Row(
-              children: [],
+              children: [
+                lineChartAZ(valores, datos),
+                lineChartGZ(valores, datos)
+              ],
             ),
             ElevatedButton(
                 onPressed: () =>

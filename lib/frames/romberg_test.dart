@@ -200,7 +200,7 @@ class RombergTestState extends State<RombergTest> {
       gyMaxValue = 0.0;
       gzMinValue = 0.0;
       gzMaxValue = 0.0;
-      _timerSeconds = timer * 1000;
+      _timerSeconds = timer;
       xValues.clear();
       yValues.clear();
       zValues.clear();
