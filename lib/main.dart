@@ -45,7 +45,7 @@ class MainApp extends StatelessWidget {
         "/": (context) => const MainFrame(),
         "/user": (context) => User(int),
         "/manage_user": (context) => ManageUser(),
-        "/romberg_test": (context) => const RombergTest(UserModel),
+        //  "/romberg_test": (context) => const RombergTest(UserModel),
         "/user_data": (context) => const UserData(UserModel),
         "/user_results": (context) => const UserResults(List<int>),
         "/info": (context) => Info(),
