@@ -7,7 +7,7 @@ import 'package:romberg_test/models/test_data_model.dart';
 import 'package:romberg_test/models/test_done_model.dart';
 import 'package:romberg_test/models/test_model.dart';
 import 'package:romberg_test/models/value_range_model.dart';
-import 'package:flutter_sensors/flutter_sensors.dart';
+import 'package:sensors/sensors.dart';
 
 import 'package:romberg_test/utils/pdf_actions.dart';
 

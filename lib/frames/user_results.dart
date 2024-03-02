@@ -57,7 +57,7 @@ class UserResults extends StatelessWidget {
               min: 0.0,
               max: 100.0,
             ),
-            /*  Row(
+            Row(
               children: [
                 lineChartAX(valores, datos),
                 lineChartGX(valores, datos)
@@ -74,7 +74,7 @@ class UserResults extends StatelessWidget {
                 lineChartAZ(valores, datos),
                 lineChartGZ(valores, datos)
               ],
-            ), */
+            ),
             ElevatedButton(
                 onPressed: () =>
                     cleanAndContinue(idValueRange, idTestDone, context),

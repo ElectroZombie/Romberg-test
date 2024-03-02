@@ -6,6 +6,7 @@ import 'package:romberg_test/frames/inf.dart';
 import 'package:romberg_test/frames/manage_user.dart';
 import 'package:romberg_test/frames/info.dart';
 import 'package:romberg_test/frames/main_frame.dart';
+import 'package:romberg_test/frames/test.dart';
 import 'package:romberg_test/frames/user.dart';
 import 'package:romberg_test/frames/user_data.dart';
 import 'package:romberg_test/frames/user_results.dart';
@@ -40,16 +41,17 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Romberg",
-      initialRoute: "/",
+      initialRoute: "/test",
       routes: {
         "/": (context) => const MainFrame(),
         "/user": (context) => User(int),
         "/manage_user": (context) => ManageUser(),
-        //  "/romberg_test": (context) => const RombergTest(UserModel),
+        "romberg_test": (context) => const RombergTest(UserModel),
         "/user_data": (context) => const UserData(UserModel),
         "/user_results": (context) => const UserResults(List<int>),
         "/info": (context) => Info(),
-        "/inf": (context) => Inf(int)
+        "/inf": (context) => Inf(int),
+        '/test': (context) => Test()
       },
     );
   }
