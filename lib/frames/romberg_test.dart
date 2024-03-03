@@ -185,7 +185,7 @@ class RombergTestState extends State<RombergTest> {
     return curvePoints;
   }
 
-  void startRecording(int timer) async {
+  Future<bool> calibrar() async {
     setState(() {
       _isRecording = true;
       xMinValue = null;
@@ -200,7 +200,7 @@ class RombergTestState extends State<RombergTest> {
       gyMaxValue = 0.0;
       gzMinValue = 0.0;
       gzMaxValue = 0.0;
-      _timerSeconds = timer;
+      _timerSeconds = 10;
       xValues.clear();
       yValues.clear();
       zValues.clear();
@@ -211,7 +211,7 @@ class RombergTestState extends State<RombergTest> {
           "Calibrando los datos. Mantenga la posicion de Romberg con los ojos abiertos";
     });
 
-    Timer.periodic(const Duration(milliseconds: 1), (Timer timer) {
+    Timer.periodic(const Duration(seconds: 10), (Timer timer) {
       setState(() {
         _timerSeconds--;
         if (_timerSeconds <= 0) {
@@ -227,7 +227,10 @@ class RombergTestState extends State<RombergTest> {
         }
       });
     });
+    return true;
+  }
 
+  Future<bool> guardarRangoValores() async {
     ValueRangeModel rangoValores = ValueRangeModel(
         idValueRange: 1,
         idTest: 1,
@@ -237,7 +240,7 @@ class RombergTestState extends State<RombergTest> {
         maximunWeight: 1,
         minimumHeight: 1,
         maximumHeight: 1);
-    for (var i = 1; i <= timer * 1000; i++) {
+    for (var i = 1; i <= 10; i++) {
       rangoValores.insertRangePoint(CurvePointRangeModel(
           i: i,
           gxi: gxValues[i],
@@ -254,24 +257,29 @@ class RombergTestState extends State<RombergTest> {
           azri: (zMaxValue! - zMinValue!) / 2.0));
     }
 
-    DB.insertNewDataRange(rangoValores);
+    await DB.insertNewDataRange(rangoValores);
+    return true;
+  }
 
+  Future<bool> tiempoEspera() async {
     setState(() {
-      _timerSeconds = 10000;
-      mensaje =
-          "Quedan ${_timerSeconds / 1000} para que empiece el test. Preparado...";
+      _timerSeconds = 10;
+      mensaje = "Quedan $_timerSeconds para que empiece el test. Preparado...";
     });
     int temp = 10;
     Timer.periodic(const Duration(seconds: 10), (Timer timer) {
       setState(() {
         temp--;
-        _timerSeconds -= 1000;
+        _timerSeconds--;
         if (temp <= 0) {
           timer.cancel();
         } else {}
       });
     });
+    return true;
+  }
 
+  Future<bool> realizarTest() async {
     setState(() {
       _isRecording = true;
       xMinValue = null;
@@ -286,7 +294,7 @@ class RombergTestState extends State<RombergTest> {
       gyMaxValue = 0.0;
       gzMinValue = 0.0;
       gzMaxValue = 0.0;
-      _timerSeconds = 30000;
+      _timerSeconds = 30;
       xValues.clear();
       yValues.clear();
       zValues.clear();
@@ -296,7 +304,7 @@ class RombergTestState extends State<RombergTest> {
       mensaje = "Mantenga la posicion de Romberg";
     });
 
-    Timer.periodic(const Duration(milliseconds: 1), (Timer timer) {
+    Timer.periodic(const Duration(seconds: 30), (Timer timer) {
       setState(() {
         _timerSeconds--;
         if (_timerSeconds <= 0) {
@@ -312,9 +320,12 @@ class RombergTestState extends State<RombergTest> {
         }
       });
     });
+    return true;
+  }
 
+  Future<bool> guardarDatosTest() async {
     TestModel test = TestModel(id: 1, name: "Test1", time: 30);
-    DB.insertNewTest(test);
+    await DB.insertNewTest(test);
 
     TestDoneModel testDone = TestDoneModel(
         idTestDone: 1,
@@ -323,14 +334,27 @@ class RombergTestState extends State<RombergTest> {
         valorUser: 100,
         date: DateTime.now());
 
-    DB.insertNewTestDone(testDone);
+    await DB.insertNewTestDone(testDone);
 
     TestDataModel testData = TestDataModel(idTestDone: 1);
-    for (var i = 1; i < 30000; i++) {
+    for (var i = 1; i < 30; i++) {
       testData.insertCurvePoint(i, gxValues[i], gyValues[i], gzValues[i],
           xValues[i], yValues[i], zValues[i]);
     }
-    DB.insertDataTestDone(testData);
+    await DB.insertDataTestDone(testData);
+    return true;
+  }
+
+  void startRecording() async {
+    await calibrar();
+
+    await guardarRangoValores();
+
+    await tiempoEspera();
+
+    await realizarTest();
+
+    await guardarDatosTest();
 
     exportPDF();
     int idtestDone = await DB.getLastIdTestDone();
@@ -367,7 +391,7 @@ class RombergTestState extends State<RombergTest> {
               ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => startRecording(10),
+              onPressed: () => startRecording(),
               child: Text('Comenzar Test'),
             ),
           ],
