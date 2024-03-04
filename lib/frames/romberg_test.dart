@@ -241,6 +241,7 @@ class RombergTestState extends State<RombergTest> {
         maximunWeight: 1,
         minimumHeight: 1,
         maximumHeight: 1);
+
     for (var i = 1; i < gxValues.length; i++) {
       rangoValores.insertRangePoint(CurvePointRangeModel(
         i: i,
@@ -264,6 +265,7 @@ class RombergTestState extends State<RombergTest> {
   Future<void> tiempoEspera() async {
     setState(() {
       _isRecording = true;
+
       _timerSeconds = 10;
       mensaje = "Quedan $_timerSeconds para que empiece el test. Preparado...";
     });
@@ -274,6 +276,7 @@ class RombergTestState extends State<RombergTest> {
         _timerSeconds--;
         if (temp <= 0) {
           timer.cancel();
+
           realizarTest();
         } else {}
       });
@@ -311,6 +314,7 @@ class RombergTestState extends State<RombergTest> {
         if (_timerSeconds <= 0) {
           timer.cancel();
           _isRecording = false;
+
           guardarDatosTest();
         } else if (_isRecording) {
           xValues.add(_accelerometerValues.x);
@@ -343,6 +347,7 @@ class RombergTestState extends State<RombergTest> {
           xValues[i], yValues[i], zValues[i]);
     }
     await DB.insertDataTestDone(testData);
+
     exportPDF();
 
     navigate();
