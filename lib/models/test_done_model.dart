@@ -17,8 +17,8 @@ class TestDoneModel {
       'id_test_done': idTestDone,
       'id_test': idTest,
       'id_user': idUser,
-      'valor_user': valorUser,
-      'date': date
+      'date': date,
+      'personal_V': valorUser,
     };
   }
 }

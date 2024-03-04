@@ -6,6 +6,6 @@ class TestModel {
   TestModel({required this.id, required this.name, required this.time});
 
   Map<String, dynamic> toMap() {
-    return {'id': id, 'name': name, 'time': time};
+    return {'id_test': id, 'name_test': name, 'time_test': time};
   }
 }

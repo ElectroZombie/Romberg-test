@@ -259,8 +259,6 @@ class RombergTestState extends State<RombergTest> {
       ));
     }
     await DB.insertNewDataRange(rangoValores);
-// table value_range has no column named height_m in "INSERT INTO value_range (id_value_range, id_test, height_m, height_M, weight_m, weight_M, age_m, age_M) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-    //este error lo da en la base de datos
   }
 
   Future<void> tiempoEspera() async {
@@ -345,17 +343,20 @@ class RombergTestState extends State<RombergTest> {
           xValues[i], yValues[i], zValues[i]);
     }
     await DB.insertDataTestDone(testData);
+    exportPDF();
+
+    navigate();
+  }
+
+  void navigate() async {
+    int idtestDone = await DB.getLastIdTestDone();
+    int idRange = await DB.getLastIdValueRange();
+    List<int> ids = [1, idRange, idtestDone];
+    Navigator.pushNamed(context, 'userResults', arguments: ids);
   }
 
   void startRecording() async {
     await calibrar();
-
-    //todo esto tiene q ir despues q guardo los datos del test para seguir la misma logica de lo qhice anteriormente
-    //exportPDF();
-    // int idtestDone = await DB.getLastIdTestDone();
-    // int idRange = await DB.getLastIdValueRange();
-    // List<int> ids = [1, idRange, idtestDone];
-    // Navigator.pushNamed(context, 'userResults', arguments: ids);
   }
 
   @override
