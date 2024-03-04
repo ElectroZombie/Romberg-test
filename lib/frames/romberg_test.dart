@@ -10,6 +10,7 @@ import 'package:romberg_test/models/value_range_model.dart';
 import 'package:sensors/sensors.dart';
 
 import 'package:romberg_test/utils/pdf_actions.dart';
+import 'package:just_audio/just_audio.dart';
 
 class RombergTest extends StatefulWidget {
   const RombergTest(userModel, {Key? key}) : super(key: key);
@@ -263,6 +264,11 @@ class RombergTestState extends State<RombergTest> {
   }
 
   Future<void> tiempoEspera() async {
+    final player = AudioPlayer();
+    final duration = await player.setUrl('/assets/audio1.mp3');
+    await player.play();
+    player.stop();
+
     setState(() {
       _isRecording = true;
 
@@ -308,9 +314,9 @@ class RombergTestState extends State<RombergTest> {
       mensaje = "Mantenga la posicion de Romberg";
     });
 
-    Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+    Timer.periodic(const Duration(milliseconds: 10), (Timer timer) {
       setState(() {
-        _timerSeconds--;
+        _timerSeconds -= 0.01;
         if (_timerSeconds <= 0) {
           timer.cancel();
           _isRecording = false;
