@@ -25,7 +25,7 @@ class DB {
           await db.execute(
               "CREATE TABLE data_test_done (id_test_done INTEGER, gX DOUBLE, gY DOUBLE, gZ DOUBLE, aX DOUBLE, aY DOUBLE, aZ DOUBLE, time INTEGER)");
           await db.execute(
-              "CREATE TABLE value_range (id_value_range INTEGER PRIMARY KEY, id_test INTEGER, height_menor DOUBLE, height_mayor DOUBLE, weight_menor DOUBLE, weight_mayor DOUBLE, age_menor DOUBLE, age_mayor DOUBLE)");
+              "CREATE TABLE value_range (id_value_range INTEGER PRIMARY KEY, id_test INTEGER, height_m DOUBLE, height_M DOUBLE, weight_m DOUBLE, weight_M DOUBLE, age_m DOUBLE, age_M DOUBLE)");
           await db.execute(
             "CREATE TABLE value_range_data (id_value_range INTEGER, time_i INTEGER, gXi DOUBLE, gXR DOUBLE, gYi DOUBLE, gYR DOUBLE, gZi DOUBLE, gZR DOUBLE, aXi DOUBLE, aXR DOUBLE, aYi DOUBLE, aYR DOUBLE, aZi DOUBLE, aZR DOUBLE)",
           );
@@ -49,7 +49,7 @@ class DB {
             await db.execute(
                 "CREATE TABLE data_test_done (id_test_done INTEGER, gX DOUBLE, gY DOUBLE, gZ DOUBLE, aX DOUBLE, aY DOUBLE, aZ DOUBLE, time INTEGER)");
             await db.execute(
-                "CREATE TABLE value_range (id_value_range INTEGER PRIMARY KEY, id_test INTEGER, height_menor DOUBLE, height_mayor DOUBLE, weight_menor DOUBLE, weight_mayor DOUBLE, age_menor DOUBLE, age_mayor DOUBLE)");
+                "CREATE TABLE value_range (id_value_range INTEGER PRIMARY KEY, id_test INTEGER, height_m DOUBLE, height_M DOUBLE, weight_m DOUBLE, weight_M DOUBLE, age_m DOUBLE, age_M DOUBLE)");
             await db.execute(
               "CREATE TABLE value_range_data (id_value_range INTEGER, time_i INTEGER, gXi DOUBLE, gXR DOUBLE, gYi DOUBLE, gYR DOUBLE, gZi DOUBLE, gZR DOUBLE, aXi DOUBLE, aXR DOUBLE, aYi DOUBLE, aYR DOUBLE, aZi DOUBLE, aZR DOUBLE)",
             );
@@ -175,7 +175,6 @@ class DB {
     D.delete('test_done', where: 'id_test_done = ?', whereArgs: idTestDone);
   }
 
-// es este
   static Future<void> insertDataTestDone(TestDataModel testDataModel) async {
     Database D = await _openDB();
 
@@ -215,7 +214,6 @@ class DB {
     return List.generate(Q.length, (i) => Q[i]['id_value_range']).first;
   }
 
-//rangos
   static Future<void> insertNewDataRange(ValueRangeModel valueRange) async {
     Database D = await _openDB();
 
