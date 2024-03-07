@@ -32,11 +32,11 @@ class ValueRangeModel {
       'id_value_range': idValueRange,
       'id_test': idTest,
       'height_m': minimumHeight,
-      'height_M': maximumHeight,
+      'heightM': maximumHeight,
       'weight_m': minimumWeight,
-      'weight_M': maximunWeight,
+      'weightM': maximunWeight,
       'age_m': minimumAge,
-      'age_M': maximumAge,
+      'ageM': maximumAge,
     };
   }
 }

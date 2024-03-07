@@ -12,7 +12,7 @@ import 'package:path/path.dart';
 
 class DB {
   static Future<Database> _openDB() async {
-    if (io.Platform.isAndroid) {
+ 
       return openDatabase(
         join(await getDatabasesPath(), 'romberg.db'),
         onCreate: (db, version) async {
@@ -25,36 +25,39 @@ class DB {
           await db.execute(
               "CREATE TABLE data_test_done (id_test_done INTEGER, gX DOUBLE, gY DOUBLE, gZ DOUBLE, aX DOUBLE, aY DOUBLE, aZ DOUBLE, time INTEGER)");
           await db.execute(
-              "CREATE TABLE value_range (id_value_range INTEGER PRIMARY KEY, id_test INTEGER, height_m DOUBLE, height_M DOUBLE, weight_m DOUBLE, weight_M DOUBLE, age_m DOUBLE, age_M DOUBLE)");
+              "CREATE TABLE value_range (id_value_range INTEGER PRIMARY KEY, id_test INTEGER, height_m DOUBLE, heightM DOUBLE, weight_m DOUBLE, weightM DOUBLE, age_m DOUBLE, ageM DOUBLE)");
           await db.execute(
             "CREATE TABLE value_range_data (id_value_range INTEGER, time_i INTEGER, gXi DOUBLE, gXR DOUBLE, gYi DOUBLE, gYR DOUBLE, gZi DOUBLE, gZR DOUBLE, aXi DOUBLE, aXR DOUBLE, aYi DOUBLE, aYR DOUBLE, aZi DOUBLE, aZR DOUBLE)",
           );
         },
         version: 1,
       );
-    }
+    
 
-    var db = databaseFactoryFfi;
-    String dbpath = join(await getDatabasesPath(), 'testdb.db');
-    return db.openDatabase(dbpath,
-        options: OpenDatabaseOptions(
-          version: 1,
-          onCreate: (db, version) async {
-            await db.execute(
-                "CREATE TABLE user (id_user INTEGER PRIMARY KEY, name_user TEXT, height_user DOUBLE, weight_user DOUBLE, age_user INTEGER)");
-            await db.execute(
-                "CREATE TABLE test (id_test INTEGER PRIMARY KEY, name_test TEXT, time_test DOUBLE)");
-            await db.execute(
-                "CREATE TABLE test_done (id_test_done INTEGER PRIMARY KEY, id_test INTEGER, id_user INTEGER, date DATE, personal_V INTEGER)");
-            await db.execute(
-                "CREATE TABLE data_test_done (id_test_done INTEGER, gX DOUBLE, gY DOUBLE, gZ DOUBLE, aX DOUBLE, aY DOUBLE, aZ DOUBLE, time INTEGER)");
-            await db.execute(
-                "CREATE TABLE value_range (id_value_range INTEGER PRIMARY KEY, id_test INTEGER, height_m DOUBLE, height_M DOUBLE, weight_m DOUBLE, weight_M DOUBLE, age_m DOUBLE, age_M DOUBLE)");
-            await db.execute(
-              "CREATE TABLE value_range_data (id_value_range INTEGER, time_i INTEGER, gXi DOUBLE, gXR DOUBLE, gYi DOUBLE, gYR DOUBLE, gZi DOUBLE, gZR DOUBLE, aXi DOUBLE, aXR DOUBLE, aYi DOUBLE, aYR DOUBLE, aZi DOUBLE, aZR DOUBLE)",
-            );
-          },
-        ));
+    // if(io.Platform.isLinux){
+    //   var db = databaseFactoryFfi;
+    // String dbpath = join(await getDatabasesPath(), 'testdb.db');
+    // return db.openDatabase(dbpath,
+    //     options: OpenDatabaseOptions(
+    //       version: 1,
+    //       onCreate: (db, version) async {
+    //         await db.execute(
+    //             "CREATE TABLE user (id_user INTEGER PRIMARY KEY, name_user TEXT, height_user DOUBLE, weight_user DOUBLE, age_user INTEGER)");
+    //         await db.execute(
+    //             "CREATE TABLE test (id_test INTEGER PRIMARY KEY, name_test TEXT, time_test DOUBLE)");
+    //         await db.execute(
+    //             "CREATE TABLE test_done (id_test_done INTEGER PRIMARY KEY, id_test INTEGER, id_user INTEGER, date DATE, personal_V INTEGER)");
+    //         await db.execute(
+    //             "CREATE TABLE data_test_done (id_test_done INTEGER, gX DOUBLE, gY DOUBLE, gZ DOUBLE, aX DOUBLE, aY DOUBLE, aZ DOUBLE, time INTEGER)");
+    //         await db.execute(
+    //             "CREATE TABLE value_range (id_value_range INTEGER PRIMARY KEY, id_test INTEGER, height_m DOUBLE, heightM DOUBLE, weight_m DOUBLE, weight_M DOUBLE, age_m DOUBLE, age_M DOUBLE)");
+    //         await db.execute(
+    //           "CREATE TABLE value_range_data (id_value_range INTEGER, time_i INTEGER, gXi DOUBLE, gXR DOUBLE, gYi DOUBLE, gYR DOUBLE, gZi DOUBLE, gZR DOUBLE, aXi DOUBLE, aXR DOUBLE, aYi DOUBLE, aYR DOUBLE, aZi DOUBLE, aZR DOUBLE)",
+    //         );
+    //       },
+    //     ));
+    // }
+
   }
 
   static Future<void> insertNewUser(UserModel user) async {
@@ -211,7 +214,7 @@ class DB {
     Database D = await _openDB();
     final List<Map<String, dynamic>> Q =
         await D.rawQuery('SELECT MAX (id_value_range) FROM value_range');
-    return List.generate(Q.length, (i) => Q[i]['id_value_range']).first;
+    return List.generate(Q.length, (i) => Q[i]['MAX (id_value_range)']).first;
   }
 
   static Future<void> insertNewDataRange(ValueRangeModel valueRange) async {
@@ -223,7 +226,7 @@ class DB {
 
     for (int i = 0; i < valueRange.rangoCurva.length; i++) {
       D.rawInsert(
-          "INSER INTO value_range_data VALUES ($id, ${valueRange.rangoCurva[i].gxi}, ${valueRange.rangoCurva[i].gxri}, ${valueRange.rangoCurva[i].gyi}, ${valueRange.rangoCurva[i].gyri}, ${valueRange.rangoCurva[i].gzi}, ${valueRange.rangoCurva[i].gzri}, ${valueRange.rangoCurva[i].axi}, ${valueRange.rangoCurva[i].axri}, ${valueRange.rangoCurva[i].ayi}, ${valueRange.rangoCurva[i].ayri}, ${valueRange.rangoCurva[i].azi}, ${valueRange.rangoCurva[i].azri})");
+          "INSERT INTO value_range_data VALUES ($id, ${valueRange.rangoCurva[i].gxi}, ${valueRange.rangoCurva[i].gxri}, ${valueRange.rangoCurva[i].gyi}, ${valueRange.rangoCurva[i].gyri}, ${valueRange.rangoCurva[i].gzi}, ${valueRange.rangoCurva[i].gzri}, ${valueRange.rangoCurva[i].axi}, ${valueRange.rangoCurva[i].axri}, ${valueRange.rangoCurva[i].ayi}, ${valueRange.rangoCurva[i].ayri}, ${valueRange.rangoCurva[i].azi}, ${valueRange.rangoCurva[i].azri})");
     }
   }
 

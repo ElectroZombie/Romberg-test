@@ -218,7 +218,7 @@ class RombergTestState extends State<RombergTest> {
         if (_timerSeconds <= 0) {
           timer.cancel();
           _isRecording = false;
-          guardarRangoValores();
+        _guardarValores();
           tiempoEspera();
         } else if (_isRecording) {
           xValues.add(_accelerometerValues.x);
@@ -231,7 +231,9 @@ class RombergTestState extends State<RombergTest> {
       });
     });
   }
-
+_guardarValores()async{
+ await guardarRangoValores();
+}
   Future<void> guardarRangoValores() async {
     ValueRangeModel rangoValores = ValueRangeModel(
         idValueRange: 1,
@@ -264,10 +266,10 @@ class RombergTestState extends State<RombergTest> {
   }
 
   Future<void> tiempoEspera() async {
-    final player = AudioPlayer();
-    final duration = await player.setUrl('/assets/audio1.mp3');
-    await player.play();
-    player.stop();
+    // final player = AudioPlayer();
+    // final duration = await player.setUrl('/assets/audio1.mp3');
+    // await player.play();
+    // player.stop();
 
     setState(() {
       _isRecording = true;
