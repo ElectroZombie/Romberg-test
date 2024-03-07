@@ -227,6 +227,7 @@ class DB {
     for (int i = 0; i < valueRange.rangoCurva.length; i++) {
       D.rawInsert(
           "INSERT INTO value_range_data VALUES ($id, ${valueRange.rangoCurva[i].gxi}, ${valueRange.rangoCurva[i].gxri}, ${valueRange.rangoCurva[i].gyi}, ${valueRange.rangoCurva[i].gyri}, ${valueRange.rangoCurva[i].gzi}, ${valueRange.rangoCurva[i].gzri}, ${valueRange.rangoCurva[i].axi}, ${valueRange.rangoCurva[i].axri}, ${valueRange.rangoCurva[i].ayi}, ${valueRange.rangoCurva[i].ayri}, ${valueRange.rangoCurva[i].azi}, ${valueRange.rangoCurva[i].azri})");
+    //  table value_range_data has 14 columns but 13 values were supplied in "INSERT INTO value_range_data VALUES (1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.20111294090747833, 0.2537853755056858, -0.12449848651885986, 0.114
     }
   }
 

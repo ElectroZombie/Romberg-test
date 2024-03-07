@@ -270,7 +270,7 @@ _guardarValores()async{
     // final duration = await player.setUrl('/assets/audio1.mp3');
     // await player.play();
     // player.stop();
-
+//el audio no pincha no tengo idea pq creo q el errore esta en q no encuentra el audio
     setState(() {
       _isRecording = true;
 
