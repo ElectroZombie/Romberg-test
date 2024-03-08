@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:io' as io;
 import 'package:romberg_test/models/curve_point_model.dart';
 import 'package:romberg_test/models/curve_point_range_model.dart';
@@ -25,7 +27,7 @@ class DB {
           await db.execute(
               "CREATE TABLE data_test_done (id_test_done INTEGER, gX DOUBLE, gY DOUBLE, gZ DOUBLE, aX DOUBLE, aY DOUBLE, aZ DOUBLE, time INTEGER)");
           await db.execute(
-              "CREATE TABLE value_range (id_value_range INTEGER PRIMARY KEY, id_test INTEGER, height_m DOUBLE, height_M DOUBLE, weight_m DOUBLE, weight_M DOUBLE, age_m DOUBLE, age_M DOUBLE)");
+              "CREATE TABLE value_range (id_value_range INTEGER PRIMARY KEY, id_test INTEGER, height_m DOUBLE, heightM DOUBLE, weight_m DOUBLE, weightM DOUBLE, age_m DOUBLE, ageM DOUBLE)");
           await db.execute(
             "CREATE TABLE value_range_data (id_value_range INTEGER, time_i INTEGER, gXi DOUBLE, gXR DOUBLE, gYi DOUBLE, gYR DOUBLE, gZi DOUBLE, gZR DOUBLE, aXi DOUBLE, aXR DOUBLE, aYi DOUBLE, aYR DOUBLE, aZi DOUBLE, aZR DOUBLE)",
           );
@@ -211,7 +213,7 @@ class DB {
     Database D = await _openDB();
     final List<Map<String, dynamic>> Q =
         await D.rawQuery('SELECT MAX (id_value_range) FROM value_range');
-    return List.generate(Q.length, (i) => Q[i]['id_value_range']).first;
+    return List.generate(Q.length, (i) => Q[i]['MAX (id_value_range)']).first;
   }
 
   static Future<void> insertNewDataRange(ValueRangeModel valueRange) async {
