@@ -223,7 +223,7 @@ class DB {
 
     for (int i = 0; i < valueRange.rangoCurva.length; i++) {
       D.rawInsert(
-          "INSER INTO value_range_data VALUES ($id, ${valueRange.rangoCurva[i].gxi}, ${valueRange.rangoCurva[i].gxri}, ${valueRange.rangoCurva[i].gyi}, ${valueRange.rangoCurva[i].gyri}, ${valueRange.rangoCurva[i].gzi}, ${valueRange.rangoCurva[i].gzri}, ${valueRange.rangoCurva[i].axi}, ${valueRange.rangoCurva[i].axri}, ${valueRange.rangoCurva[i].ayi}, ${valueRange.rangoCurva[i].ayri}, ${valueRange.rangoCurva[i].azi}, ${valueRange.rangoCurva[i].azri})");
+          "INSERT INTO value_range_data VALUES ($id, $i, ${valueRange.rangoCurva[i].gxi}, ${valueRange.rangoCurva[i].gxri}, ${valueRange.rangoCurva[i].gyi}, ${valueRange.rangoCurva[i].gyri}, ${valueRange.rangoCurva[i].gzi}, ${valueRange.rangoCurva[i].gzri}, ${valueRange.rangoCurva[i].axi}, ${valueRange.rangoCurva[i].axri}, ${valueRange.rangoCurva[i].ayi}, ${valueRange.rangoCurva[i].ayri}, ${valueRange.rangoCurva[i].azi}, ${valueRange.rangoCurva[i].azri})");
     }
   }
 

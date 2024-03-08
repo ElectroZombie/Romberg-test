@@ -218,7 +218,7 @@ class RombergTestState extends State<RombergTest> {
         if (_timerSeconds <= 0) {
           timer.cancel();
           _isRecording = false;
-          guardarRangoValores();
+          _guardarValores();
           tiempoEspera();
         } else if (_isRecording) {
           xValues.add(_accelerometerValues.x);
@@ -230,6 +230,10 @@ class RombergTestState extends State<RombergTest> {
         }
       });
     });
+  }
+
+  _guardarValores() async {
+    await guardarRangoValores();
   }
 
   Future<void> guardarRangoValores() async {
@@ -283,10 +287,14 @@ class RombergTestState extends State<RombergTest> {
         if (temp <= 0) {
           timer.cancel();
 
-          realizarTest();
+          _realizarTestF();
         } else {}
       });
     });
+  }
+
+  _realizarTestF() async {
+    await realizarTest();
   }
 
   Future<void> realizarTest() async {
@@ -321,7 +329,7 @@ class RombergTestState extends State<RombergTest> {
           timer.cancel();
           _isRecording = false;
 
-          guardarDatosTest();
+          _guardarDatosTest();
         } else if (_isRecording) {
           xValues.add(_accelerometerValues.x);
           yValues.add(_accelerometerValues.y);
@@ -332,6 +340,10 @@ class RombergTestState extends State<RombergTest> {
         }
       });
     });
+  }
+
+  _guardarDatosTest() async {
+    await guardarDatosTest();
   }
 
   Future<void> guardarDatosTest() async {

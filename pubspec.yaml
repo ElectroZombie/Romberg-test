@@ -31,6 +31,7 @@ dependencies:
   pdf: ^3.10.7
   path_provider: ^2.1.2
   fl_chart: ^0.66.2
+  just_audio: ^0.9.36
   
   
   
