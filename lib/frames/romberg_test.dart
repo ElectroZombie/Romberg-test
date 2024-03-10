@@ -238,7 +238,8 @@ class RombergTestState extends State<RombergTest> {
 
   Future<void> guardarRangoValores() async {
     ValueRangeModel rangoValores = ValueRangeModel(
-        idValueRange: 1,
+        idValueRange: (await DB.getLastIdValueRange()) + 1,
+        //Aqui pongo el id nuevo como el ultimo que se encuentre en la base de datos, y le sumo 1
         idTest: 1,
         minimumAge: 1,
         maximumAge: 1,
@@ -267,12 +268,16 @@ class RombergTestState extends State<RombergTest> {
     await DB.insertNewDataRange(rangoValores);
   }
 
-  Future<void> tiempoEspera() async {
+  reproducirAudio() async {
     // final player = AudioPlayer();
     // final duration = await player.setUrl('/assets/audio1.mp3');
     // await player.play();
     // player.stop();
 //el audio no pincha no tengo idea pq creo q el errore esta en q no encuentra el audio
+  }
+
+  Future<void> tiempoEspera() async {
+    await reproducirAudio();
     setState(() {
       _isRecording = true;
 
@@ -351,7 +356,8 @@ class RombergTestState extends State<RombergTest> {
     await DB.insertNewTest(test);
 
     TestDoneModel testDone = TestDoneModel(
-        idTestDone: 1,
+        idTestDone: (await DB.getLastIdTestDone()) + 1,
+        //aqui saco primero el ultimo id de test hechos, y le sumo 1. Esto deberia resolver los problemas de base de datos
         idTest: 1,
         idUser: 1,
         valorUser: 100,
@@ -375,6 +381,10 @@ class RombergTestState extends State<RombergTest> {
     int idtestDone = await DB.getLastIdTestDone();
     int idRange = await DB.getLastIdValueRange();
     List<int> ids = [1, idRange, idtestDone];
+    ir(ids);
+  }
+
+  void ir(List<int> ids) {
     Navigator.pushNamed(context, 'userResults', arguments: ids);
   }
 
@@ -401,14 +411,14 @@ class RombergTestState extends State<RombergTest> {
                     'Tiempo restante: ${_timerSeconds.toStringAsFixed(2)} segundos',
                     style: TextStyle(fontSize: 24),
                   ),
-                 const SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     mensaje,
                     style: TextStyle(fontSize: 24),
                   ),
                 ],
               ),
-           const SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => startRecording(),
               child: Text('Comenzar Test'),
