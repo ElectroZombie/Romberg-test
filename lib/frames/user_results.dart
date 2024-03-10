@@ -87,8 +87,10 @@ class UserResults extends StatelessWidget {
 
     String resultadoTest = "negativo";
     double? valorPersonal = 0.0;
-
-    ValueRangeModel valores = getDataRange(idValueRange);
+    //este error es el q hay en los datos 
+// Exception has occurred.
+// _TypeError (type 'Future<dynamic>' is not a subtype of type 'ValueRangeModel')
+    ValueRangeModel valores =  getDataRange(idValueRange);
     TestDataModel datos = getdatos(idTestDone);
 
     Tuple<List<double>, double> tupla = actualizarPorcentaje(valores, datos);

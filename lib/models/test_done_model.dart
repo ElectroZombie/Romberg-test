@@ -3,7 +3,7 @@ class TestDoneModel {
   int idTest;
   int idUser;
   int valorUser;
-  DateTime date;
+  String date;
 
   TestDoneModel(
       {required this.idTestDone,

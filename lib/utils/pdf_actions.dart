@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:pdf/widgets.dart' as pw;
+import 'package:permission_handler/permission_handler.dart';
 
 void exportToPDF(
     xMinValue,
@@ -21,6 +22,13 @@ void exportToPDF(
     List gxValues,
     List gyValues,
     List gzValues) async {
+      var status = await Permission.storage.status;
+if (status.isDenied) {
+  // Solicita permiso de almacenamiento.
+  Map<Permission, PermissionStatus> statuses = await [Permission.storage].request();
+  print(statuses[Permission.storage]);
+}
+
   final pdf = pw.Document();
 
   // Agrega el título
@@ -97,8 +105,10 @@ void exportToPDF(
   const path = '/storage/emulated/0/Download/datos.pdf';
 
   // Guarda el archivo PDF
+  if(status.isGranted){
   final file = File(path);
   await file.writeAsBytes(await pdf.save());
+  }
 
   print('Archivo PDF guardado en: $path');
 }

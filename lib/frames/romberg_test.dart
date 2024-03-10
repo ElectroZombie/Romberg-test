@@ -352,8 +352,8 @@ class RombergTestState extends State<RombergTest> {
   }
 
   Future<void> guardarDatosTest() async {
-    TestModel test = TestModel(id: 1, name: "Test1", time: 30);
-    await DB.insertNewTest(test);
+    // TestModel test = TestModel(id: 1, name: "Test1", time: 30);
+    // await DB.insertNewTest(test);
 
     TestDoneModel testDone = TestDoneModel(
         idTestDone: (await DB.getLastIdTestDone()) + 1,
@@ -361,7 +361,7 @@ class RombergTestState extends State<RombergTest> {
         idTest: 1,
         idUser: 1,
         valorUser: 100,
-        date: DateTime.now());
+        date: DateTime.now().toString());
 
     await DB.insertNewTestDone(testDone);
 
@@ -372,7 +372,7 @@ class RombergTestState extends State<RombergTest> {
     }
     await DB.insertDataTestDone(testData);
 
-    exportPDF();
+   // exportPDF();
 
     navigate();
   }
@@ -381,11 +381,12 @@ class RombergTestState extends State<RombergTest> {
     int idtestDone = await DB.getLastIdTestDone();
     int idRange = await DB.getLastIdValueRange();
     List<int> ids = [1, idRange, idtestDone];
+    //no se q significa ese 1 en los ids
     ir(ids);
   }
 
   void ir(List<int> ids) {
-    Navigator.pushNamed(context, 'userResults', arguments: ids);
+    Navigator.pushNamed(context, '/user_results', arguments: ids);
   }
 
   void startRecording() async {

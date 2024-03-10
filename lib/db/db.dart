@@ -47,7 +47,7 @@ class DB {
             await db.execute(
                 "CREATE TABLE test (id_test INTEGER PRIMARY KEY, name_test TEXT, time_test DOUBLE)");
             await db.execute(
-                "CREATE TABLE test_done (id_test_done INTEGER PRIMARY KEY, id_test INTEGER, id_user INTEGER, date DATE, personal_V INTEGER)");
+                "CREATE TABLE test_done (id_test_done INTEGER PRIMARY KEY, id_test INTEGER, id_user INTEGER, date TEXT, personal_V INTEGER)");
             await db.execute(
                 "CREATE TABLE data_test_done (id_test_done INTEGER, gX DOUBLE, gY DOUBLE, gZ DOUBLE, aX DOUBLE, aY DOUBLE, aZ DOUBLE, time INTEGER)");
             await db.execute(
@@ -179,8 +179,8 @@ class DB {
   static Future<int> getLastIdTestDone() async {
     Database D = await _openDB();
     final List<Map<String, dynamic>> Q =
-        await D.rawQuery('SELECT MAX (id_test_done) FROM test_done');
-    return List.generate(Q.length, (i) => Q[i]['id_test_done']).first;
+        await D.rawQuery('SELECT MAX (id_test_done) as max_id FROM test_done');
+    return List.generate(Q.length, (i) => Q[i]['max_id']).first ?? 1;
   }
 
   static Future<void> deleteTestDone(idTestDone) async {
@@ -224,11 +224,11 @@ class DB {
   }
 
   static Future<int> getLastIdValueRange() async {
-    Database D = await _openDB();
-    final List<Map<String, dynamic>> Q =
-        await D.rawQuery('SELECT MAX (id_value_range) FROM value_range');
-    return List.generate(Q.length, (i) => Q[i]['MAX (id_value_range)']).first;
-  }
+  Database D = await _openDB();
+  final List<Map<String, dynamic>> Q =
+      await D.rawQuery('SELECT MAX(id_value_range) as max_id FROM value_range');
+  return List.generate(Q.length, (i) => Q[i]['max_id']).first ?? 1;
+}
 
   static Future<void> insertNewDataRange(ValueRangeModel valueRange) async {
     Database D = await _openDB();
