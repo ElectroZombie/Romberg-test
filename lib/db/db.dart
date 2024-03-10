@@ -106,6 +106,20 @@ class DB {
 
   static Future<void> insertNewTest(TestModel test) async {
     Database D = await _openDB();
+//     El error DatabaseException(UNIQUE constraint failed: test.id_test) indica que estás intentando insertar un valor en la columna id_test que ya existe en la base de datos, lo cual viola la restricción de unicidad de esa columna12.
+
+// Aquí hay algunas posibles soluciones:
+
+//     Verificar los datos antes de la inserción: Antes de intentar insertar datos, puedes ejecutar una comprobación en tu aplicación para asegurarte de que el valor no exista ya en la base de datos3.
+
+//     Manejar el error de manera adecuada: Cuando un error no puede ser prevenido, es importante manejarlo de manera adecuada3.
+
+//     Actualizar el esquema de la base de datos: Si no te importa generar los IDs por ti mismo, puedes agregar la configuración AUTOINCREMENT a la definición de tu columna id_test. De esta manera, se llenará automáticamente y cada fila tendrá su propio valor único2.
+
+//     Usar ConflictAlgorithm.replace: En la función de inserción de la base de datos, puedes agregar conflictAlgorithm: ConflictAlgorithm.replace. Esto reemplazará el valor único existente1.
+
+// Por favor, revisa tu código y asegúrate de que estás proporcionando un valor único para la columna id_test cuando intentas insertar datos en la tabla test. Si el problema persiste, considera consultar con un experto en Flutter o SQLite para obtener ayuda más específica.
+
     D.insert('test', test.toMap());
   }
 
@@ -220,6 +234,19 @@ class DB {
     Database D = await _openDB();
 
     D.insert('value_range', valueRange.toMap());
+//   El error DatabaseException(UNIQUE constraint failed: value_range.id_value_range) indica que estás intentando insertar un valor en la columna id_value_range que ya existe en la base de datos, lo cual viola la restricción de unicidad de esa columna12.
+
+// Aquí hay algunas posibles soluciones:
+
+//     Verificar los datos antes de la inserción: Antes de intentar insertar datos, puedes ejecutar una comprobación en tu aplicación para asegurarte de que el valor no exista ya en la base de datos3.
+
+//     Manejar el error de manera adecuada: Cuando un error no puede ser prevenido, es importante manejarlo de manera adecuada3.
+
+//     Actualizar el esquema de la base de datos: Si no te importa generar los IDs por ti mismo, puedes agregar la configuración AUTOINCREMENT a la definición de tu columna id_value_range. De esta manera, se llenará automáticamente y cada fila tendrá su propio valor único2.
+
+//     Usar ConflictAlgorithm.replace: En la función de inserción de la base de datos, puedes agregar conflictAlgorithm: ConflictAlgorithm.replace. Esto reemplazará el valor único existente2.
+
+// Por favor, revisa tu código y asegúrate de que estás proporcionando un valor único para la columna id_value_range cuando intentas insertar datos en la tabla value_range. Si el problema persiste, considera consultar con un experto en Flutter o SQLite para obtener ayuda más específica.
 
     int id = await getLastIdValueRange();
 

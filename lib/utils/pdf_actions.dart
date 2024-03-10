@@ -94,7 +94,7 @@ void exportToPDF(
 
   // Obtiene la ruta de la carpeta de descargas
 
-  const path = '/storage/emulated/0/Download//datos.pdf';
+  const path = '/storage/emulated/0/Download/datos.pdf';
 
   // Guarda el archivo PDF
   final file = File(path);

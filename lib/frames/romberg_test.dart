@@ -401,14 +401,14 @@ class RombergTestState extends State<RombergTest> {
                     'Tiempo restante: ${_timerSeconds.toStringAsFixed(2)} segundos',
                     style: TextStyle(fontSize: 24),
                   ),
-                  SizedBox(height: 20),
+                 const SizedBox(height: 20),
                   Text(
                     mensaje,
                     style: TextStyle(fontSize: 24),
                   ),
                 ],
               ),
-            SizedBox(height: 20),
+           const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => startRecording(),
               child: Text('Comenzar Test'),
