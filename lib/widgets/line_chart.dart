@@ -3,9 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:romberg_test/models/test_data_model.dart';
 import 'package:romberg_test/models/value_range_model.dart';
 
-Widget lineChartAX(ValueRangeModel valores, TestDataModel datos) {
+Color colorPorcentaje(double porcentaje) {
+  if (porcentaje <= 40.0) {
+    return Color.fromARGB(255, 59, 2, 61);
+  } else if (porcentaje <= 60.0) {
+    return Color.fromARGB(255, 194, 8, 8);
+  } else if (porcentaje <= 80.0) {
+    return Color.fromARGB(255, 165, 66, 1);
+  } else {
+    return Color.fromARGB(255, 72, 190, 3);
+  }
+}
+
+Widget lineChartAX(
+    ValueRangeModel valores, TestDataModel datos, double porcentajeExito) {
   return LineChart(
     LineChartData(
+        backgroundColor: colorPorcentaje(porcentajeExito),
         minY: 0,
         maxY: 100,
         minX: 0,
@@ -52,7 +66,8 @@ List<LineChartBarData> linesAX(ValueRangeModel valores, TestDataModel datos) {
   return line;
 }
 
-Widget lineChartAY(ValueRangeModel valores, TestDataModel datos) {
+Widget lineChartAY(
+    ValueRangeModel valores, TestDataModel datos, double porcentajeExito) {
   return LineChart(
     LineChartData(
         minY: 0,
@@ -101,7 +116,8 @@ List<LineChartBarData> linesAY(ValueRangeModel valores, TestDataModel datos) {
   return line;
 }
 
-Widget lineChartAZ(ValueRangeModel valores, TestDataModel datos) {
+Widget lineChartAZ(
+    ValueRangeModel valores, TestDataModel datos, double porcentajeExito) {
   return LineChart(
     LineChartData(
         minY: 0,
@@ -150,7 +166,8 @@ List<LineChartBarData> linesAZ(ValueRangeModel valores, TestDataModel datos) {
   return line;
 }
 
-Widget lineChartGX(ValueRangeModel valores, TestDataModel datos) {
+Widget lineChartGX(
+    ValueRangeModel valores, TestDataModel datos, double porcentajeExito) {
   return LineChart(
     LineChartData(
         minY: 0,
@@ -199,7 +216,8 @@ List<LineChartBarData> linesGX(ValueRangeModel valores, TestDataModel datos) {
   return line;
 }
 
-Widget lineChartGY(ValueRangeModel valores, TestDataModel datos) {
+Widget lineChartGY(
+    ValueRangeModel valores, TestDataModel datos, double porcentajeExito) {
   return LineChart(
     LineChartData(
         minY: 0,
@@ -248,7 +266,8 @@ List<LineChartBarData> linesGY(ValueRangeModel valores, TestDataModel datos) {
   return line;
 }
 
-Widget lineChartGZ(ValueRangeModel valores, TestDataModel datos) {
+Widget lineChartGZ(
+    ValueRangeModel valores, TestDataModel datos, double porcentajeExito) {
   return LineChart(
     LineChartData(
         minY: 0,

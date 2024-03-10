@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:romberg_test/db/db.dart';
 import 'package:romberg_test/models/test_data_model.dart';
 import 'package:romberg_test/models/value_range_model.dart';
+import 'package:romberg_test/utils/tuple.dart';
 import 'package:romberg_test/widgets/line_chart.dart';
 
 class UserResults extends StatelessWidget {
@@ -21,6 +22,62 @@ class UserResults extends StatelessWidget {
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 
+  Tuple<List<double>, double> actualizarPorcentaje(
+      ValueRangeModel valores, TestDataModel datos) {
+    List<double> porcentajes = List.filled(6, 0.0);
+    double porcentajeTotal;
+    List<int> totalDesalineados = List.filled(6, 0);
+
+    for (int i = 0; i < valores.rangoCurva.length; i++) {
+      if (datos.curva[i].gx <
+              (valores.rangoCurva[i].gxi - valores.rangoCurva[i].gxri) ||
+          datos.curva[i].gx >
+              (valores.rangoCurva[i].gxi + valores.rangoCurva[i].gxri)) {
+        totalDesalineados[0]++;
+      }
+      if (datos.curva[i].gy <
+              (valores.rangoCurva[i].gyi - valores.rangoCurva[i].gyri) ||
+          datos.curva[i].gy >
+              (valores.rangoCurva[i].gyi + valores.rangoCurva[i].gyri)) {
+        totalDesalineados[1]++;
+      }
+      if (datos.curva[i].gz <
+              (valores.rangoCurva[i].gzi - valores.rangoCurva[i].gzri) ||
+          datos.curva[i].gz >
+              (valores.rangoCurva[i].gzi + valores.rangoCurva[i].gzri)) {
+        totalDesalineados[2]++;
+      }
+      if (datos.curva[i].ax <
+              (valores.rangoCurva[i].axi - valores.rangoCurva[i].axri) ||
+          datos.curva[i].ax >
+              (valores.rangoCurva[i].axi + valores.rangoCurva[i].axri)) {
+        totalDesalineados[3]++;
+      }
+      if (datos.curva[i].ay <
+              (valores.rangoCurva[i].ayi - valores.rangoCurva[i].ayri) ||
+          datos.curva[i].ay >
+              (valores.rangoCurva[i].ayi + valores.rangoCurva[i].ayri)) {
+        totalDesalineados[4]++;
+      }
+      if (datos.curva[i].az <
+              (valores.rangoCurva[i].azi - valores.rangoCurva[i].azri) ||
+          datos.curva[i].az >
+              (valores.rangoCurva[i].azi + valores.rangoCurva[i].azri)) {
+        totalDesalineados[5]++;
+      }
+    }
+    int TotalDesalineados = 0;
+    for (int i = 0; i < 6; i++) {
+      porcentajes[i] = (totalDesalineados[i] / valores.rangoCurva.length) * 100;
+      TotalDesalineados += totalDesalineados[i];
+    }
+    porcentajeTotal =
+        (TotalDesalineados / (valores.rangoCurva.length * 6)) / 100;
+
+    return Tuple<List<double>, double>(
+        elem1: porcentajes, elem2: porcentajeTotal);
+  }
+
   @override
   Widget build(BuildContext context) {
     List<int> lista = ModalRoute.of(context)!.settings.arguments as List<int>;
@@ -29,11 +86,13 @@ class UserResults extends StatelessWidget {
     int idTestDone = lista[2];
 
     String resultadoTest = "negativo";
-    double? porcentaje = 100.0;
     double? valorPersonal = 0.0;
 
     ValueRangeModel valores = getDataRange(idValueRange);
     TestDataModel datos = getdatos(idTestDone);
+
+    Tuple<List<double>, double> tupla = actualizarPorcentaje(valores, datos);
+    double porcentaje = tupla.elem2;
 
     return Scaffold(
         appBar: AppBar(
@@ -59,20 +118,20 @@ class UserResults extends StatelessWidget {
             ),
             Row(
               children: [
-                lineChartAX(valores, datos),
-                lineChartGX(valores, datos)
+                lineChartAX(valores, datos, tupla.elem1[3]),
+                lineChartGX(valores, datos, tupla.elem1[0])
               ],
             ),
             Row(
               children: [
-                lineChartAY(valores, datos),
-                lineChartGY(valores, datos)
+                lineChartAY(valores, datos, tupla.elem1[4]),
+                lineChartGY(valores, datos, tupla.elem1[1])
               ],
             ),
             Row(
               children: [
-                lineChartAZ(valores, datos),
-                lineChartGZ(valores, datos)
+                lineChartAZ(valores, datos, tupla.elem1[5]),
+                lineChartGZ(valores, datos, tupla.elem1[2])
               ],
             ),
             ElevatedButton(
