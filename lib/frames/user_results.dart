@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:romberg_test/db/db.dart';
 import 'package:romberg_test/models/test_data_model.dart';
@@ -6,14 +8,16 @@ import 'package:romberg_test/utils/tuple.dart';
 import 'package:romberg_test/widgets/line_chart.dart';
 
 class UserResults extends StatelessWidget {
-  const UserResults(listaIds, {Key? key}) : super(key: key);
+  UserResults(listaIds, {Key? key}) : super(key: key);
 
-  getDataRange(id) async {
-    return await DB.getDataRange(id);
-  }
+  ValueRangeModel? valores;
+  TestDataModel? datos;
 
-  getdatos(id) async {
-    return await DB.getDataTestDone(id);
+  void actualizarValores(int idRange, int idTest) async {
+    valores = await DB.getDataRange(idRange);
+    datos = await DB.getDataTestDone(idTest);
+    //Si esto no funciona, lo que hay que hacer es convertir el widget en stateful, y adaptarlo, y con eso debe pinchar,
+    //porque lo que falta es que coja esos valores y los actualice
   }
 
   cleanAndContinue(idValueRange, idTestDone, context) async {
@@ -87,11 +91,12 @@ class UserResults extends StatelessWidget {
 
     String resultadoTest = "negativo";
     double? valorPersonal = 0.0;
-    //este error es el q hay en los datos 
-// Exception has occurred.
-// _TypeError (type 'Future<dynamic>' is not a subtype of type 'ValueRangeModel')
-    ValueRangeModel valores =  getDataRange(idValueRange);
-    TestDataModel datos = getdatos(idTestDone);
+
+    actualizarValores(idValueRange, idTestDone);
+
+    ValueRangeModel valores = this.valores!;
+
+    TestDataModel datos = this.datos!;
 
     Tuple<List<double>, double> tupla = actualizarPorcentaje(valores, datos);
     double porcentaje = tupla.elem2;
