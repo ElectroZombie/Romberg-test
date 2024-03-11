@@ -5,7 +5,6 @@ import 'package:romberg_test/models/curve_point_model.dart';
 import 'package:romberg_test/models/curve_point_range_model.dart';
 import 'package:romberg_test/models/test_data_model.dart';
 import 'package:romberg_test/models/test_done_model.dart';
-import 'package:romberg_test/models/test_model.dart';
 import 'package:romberg_test/models/value_range_model.dart';
 import 'package:sensors/sensors.dart';
 
@@ -372,7 +371,7 @@ class RombergTestState extends State<RombergTest> {
     }
     await DB.insertDataTestDone(testData);
 
-   // exportPDF();
+    // exportPDF();
 
     navigate();
   }
@@ -381,7 +380,8 @@ class RombergTestState extends State<RombergTest> {
     int idtestDone = await DB.getLastIdTestDone();
     int idRange = await DB.getLastIdValueRange();
     List<int> ids = [1, idRange, idtestDone];
-    //no se q significa ese 1 en los ids
+    //no se q significa ese 1 en los ids.
+    //R:Es pal usuario, que ahora no hace falta, por eso lo paso generico
     ir(ids);
   }
 
