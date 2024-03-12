@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:romberg_test/widgets/gradient.dart';
 
 class Inf extends StatelessWidget {
-  Inf(inte, {Key? key}) : super(key: key);
+  const Inf(inte, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +25,25 @@ class Inf extends StatelessWidget {
           "El test de Romberg se utiliza principalmente en neurología como una herramienta de evaluación clínica para detectar trastornos del equilibrio y de la postura, así como para identificar posibles problemas en el sistema sensorial y neurológico relacionados con el equilibrio. Algunas de las razones por las que se utiliza el test de Romberg incluyen:\n 1. Evaluación del sistema vestibular: El test de Romberg puede ayudar a detectar trastornos del sistema vestibular, que es responsable del equilibrio y coordinación del cuerpo. Si un paciente tiene dificultades para mantener la postura con los ojos cerrados, puede ser indicativo de problemas en el laberinto vestibular del oído interno.\n 2. Evaluación de la función propioceptiva: La propiocepción es la capacidad del cuerpo para percibir la posición y movimiento de las articulaciones. El test de Romberg también evalúa la función propioceptiva, ya que al cerrar los ojos se elimina la entrada visual, dejando al sistema propioceptivo como la principal fuente de información para mantener el equilibrio.\n 3. Detectar ataxia y neuropatías periféricas: El test de Romberg puede ayudar a identificar la presencia de ataxia, que se caracteriza por descoordinación de los movimientos musculares, así como neuropatías periféricas que afectan la sensibilidad y la función motora de las extremidades.\n 4. Seguimiento de lesiones neurológicas: En casos de lesiones neurológicas, como lesiones de la médula espinal o del cerebro, el test de Romberg puede ser utilizado para monitorizar la progresión de los síntomas y la respuesta al tratamiento.\n En resumen, el test de Romberg se utiliza como una herramienta diagnóstica para evaluar la integridad de los mecanismos implicados en el equilibrio y la postura, permitiendo a los profesionales de la salud detectar posibles alteraciones en el sistema sensorial y neurológico que puedan estar afectando la capacidad del paciente para mantenerse en equilibrio.";
     }
     return Scaffold(
-      appBar: AppBar(
-        actions: [BackButton()],
-      ),
-      body: Text(
-        texto,
-        textAlign: TextAlign.justify,
-        style: TextStyle(
-            fontSize: 24.0,
-            shadows: [Shadow(blurRadius: 1, offset: Offset.fromDirection(1))]),
-      ),
-    );
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(199, 84, 209, 136),
+        ),
+        body: Stack(
+          children: [
+            gradient(),
+            Center(
+                child: SizedBox(
+                    height: (MediaQuery.of(context).size.height * 80) / 100,
+                    width: (MediaQuery.of(context).size.width * 90) / 100,
+                    child: SingleChildScrollView(
+                        child: Text(
+                      texto,
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(fontSize: 24.0, shadows: [
+                        Shadow(blurRadius: 0.5, offset: Offset.fromDirection(1))
+                      ]),
+                    ))))
+          ],
+        ));
   }
 }
