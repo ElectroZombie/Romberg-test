@@ -36,7 +36,8 @@ class _UserResultsState extends State<UserResults> {
       minimumHeight: 1,
       maximumHeight: 1);
   TestDataModel? datos = TestDataModel(idTestDone: 1);
-  Tuple<List<double>, double>? tupla = Tuple(elem1: [], elem2: 1);
+  Tuple<List<double>, double>? tupla = Tuple(elem1: [], elem2: 0);
+  String resultadoTest = "Negativo";
 
   Future<void> actualizarValores(int idRange, int idTest) async {
     var aux1 = await DB.getDataRange(idRange);
@@ -54,11 +55,6 @@ class _UserResultsState extends State<UserResults> {
     await DB.deleteTestDone(idTestDone);
     // ignore: use_build_context_synchronously
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-  }
-
-  void inicializar() async {
-    await actualizarValores(widget.idRange!, widget.idTest!);
-    setState(() {});
   }
 
   Future<void> actualizarPorcentaje(
@@ -116,6 +112,9 @@ class _UserResultsState extends State<UserResults> {
     setState(() {
       tupla = Tuple<List<double>, double>(
           elem1: porcentajes, elem2: porcentajeTotal);
+      if (porcentajeTotal <= 60.0) {
+        resultadoTest = "Positivo";
+      }
     });
   }
 
@@ -143,7 +142,6 @@ class _UserResultsState extends State<UserResults> {
             ),
           ); // Muestra un indicador de carga mientras se espera.
         } else {
-          String resultadoTest = "negativo";
           double? valorPersonal = 0.0;
 
           return Scaffold(
@@ -171,7 +169,7 @@ class _UserResultsState extends State<UserResults> {
                     min: 0.0,
                     max: 100.0,
                   ),
-                  Row(children: [
+                  /*  Row(children: [
                     lineChartAX(valores!, datos!, tupla!.elem1[3]),
                     lineChartGX(valores!, datos!, tupla!.elem1[0])
                   ]),
@@ -182,7 +180,8 @@ class _UserResultsState extends State<UserResults> {
                   Row(children: [
                     lineChartAZ(valores!, datos!, tupla!.elem1[5]),
                     lineChartGZ(valores!, datos!, tupla!.elem1[2])
-                  ]),
+                  ]),*/
+                  //Por ahora vamos a ignorar los graficos. Para ver si el resto funciona bien
                   ElevatedButton(
                       onPressed: () => cleanAndContinue(
                           widget.idRange!, widget.idTest!, context),
