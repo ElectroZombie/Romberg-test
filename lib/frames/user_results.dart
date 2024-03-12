@@ -24,17 +24,28 @@ class UserResults extends StatefulWidget {
 }
 
 class _UserResultsState extends State<UserResults> {
-  ValueRangeModel? valores;
-  TestDataModel? datos;
   double? porcentaje = 0.0;
 
-  void actualizarValores(int idRange, int idTest) async {
+  ValueRangeModel? valores = ValueRangeModel(
+      idValueRange: 1,
+      idTest: 1,
+      minimumAge: 1,
+      maximumAge: 1,
+      minimumWeight: 1,
+      maximunWeight: 1,
+      minimumHeight: 1,
+      maximumHeight: 1);
+  TestDataModel? datos = TestDataModel(idTestDone: 1);
+  Tuple<List<double>, double>? tupla = Tuple(elem1: [], elem2: 1);
+
+  Future<void> actualizarValores(int idRange, int idTest) async {
     var aux1 = await DB.getDataRange(idRange);
     var aux2 = await DB.getDataTestDone(idTest);
     setState(() {
       valores = aux1;
       datos = aux2;
     });
+    await actualizarPorcentaje(valores!, datos!);
   }
 
   cleanAndContinue(
@@ -45,14 +56,13 @@ class _UserResultsState extends State<UserResults> {
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 
-  @override
-  void initState() {
-    actualizarValores(widget.idRange!, widget.idTest!);
-    super.initState();
+  void inicializar() async {
+    await actualizarValores(widget.idRange!, widget.idTest!);
+    setState(() {});
   }
 
-  Tuple<List<double>, double> actualizarPorcentaje(
-      ValueRangeModel valores, TestDataModel datos) {
+  Future<void> actualizarPorcentaje(
+      ValueRangeModel valores, TestDataModel datos) async {
     List<double> porcentajes = List.filled(6, 0.0);
     double porcentajeTotal;
     List<int> totalDesalineados = List.filled(6, 0);
@@ -95,7 +105,7 @@ class _UserResultsState extends State<UserResults> {
         totalDesalineados[5]++;
       }
     }
-    int desalineadosTotal = 0;
+    double desalineadosTotal = 0;
     for (int i = 0; i < 6; i++) {
       porcentajes[i] = (totalDesalineados[i] / valores.rangoCurva.length) * 100;
       desalineadosTotal += totalDesalineados[i];
@@ -103,67 +113,84 @@ class _UserResultsState extends State<UserResults> {
     porcentajeTotal =
         (desalineadosTotal / (valores.rangoCurva.length * 6)) / 100;
 
-    return Tuple<List<double>, double>(
-        elem1: porcentajes, elem2: porcentajeTotal);
+    setState(() {
+      tupla = Tuple<List<double>, double>(
+          elem1: porcentajes, elem2: porcentajeTotal);
+    });
+  }
+
+  Future<void>? _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = actualizarValores(widget.idRange!, widget.idTest!);
   }
 
   @override
   Widget build(BuildContext context) {
-    String resultadoTest = "negativo";
-    double? valorPersonal = 0.0;
-
-    ValueRangeModel valoresCurrent = valores!;
-
-    TestDataModel datosCurrent = datos!;
-
-    Tuple<List<double>, double> tupla =
-        actualizarPorcentaje(valoresCurrent, datosCurrent);
-    setState(() {
-      porcentaje = tupla.elem2;
-    });
-
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text("Resultados del test"),
-          backgroundColor: const Color.fromARGB(199, 84, 209, 136),
-        ),
-        body: Stack(children: [
-          gradient(),
-          SingleChildScrollView(
-              child: Column(children: [
-            const Text("Tiempo efectivo del test"),
-            Text(datosCurrent.curva.length as String),
-            Text("El resultado del test es $resultadoTest"),
-            Text("Porcentaje de exito del test: ${porcentaje as String}"),
-            const Text("Valoracion personal del usuario: "),
-            Slider(
-              value: 0,
-              onChanged: (value) {
-                valorPersonal = value;
-              },
-              divisions: 3,
-              allowedInteraction: SliderInteraction.tapAndSlide,
-              min: 0.0,
-              max: 100.0,
+    return FutureBuilder(
+      future: _future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const AlertDialog(
+            backgroundColor: Colors.black,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+              ],
             ),
-            Row(children: [
-              lineChartAX(valoresCurrent, datosCurrent, tupla.elem1[3]),
-              lineChartGX(valoresCurrent, datosCurrent, tupla.elem1[0])
-            ]),
-            Row(children: [
-              lineChartAY(valoresCurrent, datosCurrent, tupla.elem1[4]),
-              lineChartGY(valoresCurrent, datosCurrent, tupla.elem1[1])
-            ]),
-            Row(children: [
-              lineChartAZ(valoresCurrent, datosCurrent, tupla.elem1[5]),
-              lineChartGZ(valoresCurrent, datosCurrent, tupla.elem1[2])
-            ]),
-            ElevatedButton(
-                onPressed: () =>
-                    cleanAndContinue(widget.idRange!, widget.idTest!, context),
-                child: const Text("Continuar"))
-          ]))
-        ]));
+          ); // Muestra un indicador de carga mientras se espera.
+        } else {
+          String resultadoTest = "negativo";
+          double? valorPersonal = 0.0;
+
+          return Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                title: const Text("Resultados del test"),
+                backgroundColor: const Color.fromARGB(199, 84, 209, 136),
+              ),
+              body: Stack(children: [
+                gradient(),
+                SingleChildScrollView(
+                    child: Column(children: [
+                  const Text("Tiempo efectivo del test"),
+                  Text("${datos!.curva.length}"),
+                  Text("El resultado del test es $resultadoTest"),
+                  Text("Porcentaje de exito del test: ${tupla!.elem2}"),
+                  const Text("Valoracion personal del usuario: "),
+                  Slider(
+                    value: 0,
+                    onChanged: (value) {
+                      valorPersonal = value;
+                    },
+                    divisions: 3,
+                    allowedInteraction: SliderInteraction.tapAndSlide,
+                    min: 0.0,
+                    max: 100.0,
+                  ),
+                  Row(children: [
+                    lineChartAX(valores!, datos!, tupla!.elem1[3]),
+                    lineChartGX(valores!, datos!, tupla!.elem1[0])
+                  ]),
+                  Row(children: [
+                    lineChartAY(valores!, datos!, tupla!.elem1[4]),
+                    lineChartGY(valores!, datos!, tupla!.elem1[1])
+                  ]),
+                  Row(children: [
+                    lineChartAZ(valores!, datos!, tupla!.elem1[5]),
+                    lineChartGZ(valores!, datos!, tupla!.elem1[2])
+                  ]),
+                  ElevatedButton(
+                      onPressed: () => cleanAndContinue(
+                          widget.idRange!, widget.idTest!, context),
+                      child: const Text("Continuar"))
+                ]))
+              ]));
+        }
+      },
+    );
   }
 }
