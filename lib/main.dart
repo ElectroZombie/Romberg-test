@@ -13,6 +13,7 @@ import 'package:romberg_test/frames/user_results.dart';
 import 'package:romberg_test/frames/romberg_test.dart';
 import 'package:romberg_test/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// ignore: depend_on_referenced_packages
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
@@ -50,7 +51,7 @@ class MainApp extends StatelessWidget {
         "/user_data": (context) => const UserData(UserModel),
         "/user_results": (context) => UserResults(),
         "/info": (context) => Info(),
-        "/inf": (context) => Inf(int),
+        "/inf": (context) => const Inf(int),
         '/test': (context) => Test()
       },
     );
