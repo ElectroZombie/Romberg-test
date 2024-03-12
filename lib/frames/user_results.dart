@@ -26,6 +26,7 @@ class UserResults extends StatefulWidget {
 class _UserResultsState extends State<UserResults> {
   ValueRangeModel? valores;
   TestDataModel? datos;
+  double? porcentaje = 0.0;
 
   void actualizarValores(int idRange, int idTest) async {
     var aux1 = await DB.getDataRange(idRange);
@@ -117,13 +118,15 @@ class _UserResultsState extends State<UserResults> {
 
     Tuple<List<double>, double> tupla =
         actualizarPorcentaje(valoresCurrent, datosCurrent);
-    double porcentaje = tupla.elem2;
+    setState(() {
+      porcentaje = tupla.elem2;
+    });
 
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: const Text("Resultados del test"),
-          backgroundColor: Color.fromARGB(199, 84, 209, 136),
+          backgroundColor: const Color.fromARGB(199, 84, 209, 136),
         ),
         body: Stack(children: [
           gradient(),
