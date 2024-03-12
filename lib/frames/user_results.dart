@@ -7,15 +7,27 @@ import 'package:romberg_test/models/value_range_model.dart';
 import 'package:romberg_test/utils/tuple.dart';
 import 'package:romberg_test/widgets/line_chart.dart';
 
-class UserResults extends StatelessWidget {
-  UserResults(listaIds, {Key? key}) : super(key: key);
+class UserResults extends StatefulWidget {
+  int ?idRange; 
+  int ?idTest;
+  UserResults({Key? key,this.idRange,this.idTest,listaIds,}) : super(key: key);
 
+  @override
+  State<UserResults> createState() => _UserResultsState();
+}
+
+class _UserResultsState extends State<UserResults> {
   ValueRangeModel? valores;
+
   TestDataModel? datos;
 
   void actualizarValores(int idRange, int idTest) async {
-    valores = await DB.getDataRange(idRange);
-    datos = await DB.getDataTestDone(idTest);
+   var aux1 =await DB.getDataRange(idRange);
+   var aux2 =await DB.getDataTestDone(idTest);
+   setState(() {
+    valores = aux1;
+    datos = aux2;
+   });
     //Si esto no funciona, lo que hay que hacer es convertir el widget en stateful, y adaptarlo, y con eso debe pinchar,
     //porque lo que falta es que coja esos valores y los actualice
   }
@@ -24,6 +36,12 @@ class UserResults extends StatelessWidget {
     await DB.deleteDataRange(idValueRange);
     await DB.deleteTestDone(idTestDone);
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+  }
+  @override
+  void initState() { 
+    actualizarValores(widget.idRange!, widget.idTest!);
+    super.initState();
+    
   }
 
   Tuple<List<double>, double> actualizarPorcentaje(
@@ -84,15 +102,15 @@ class UserResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<int> lista = ModalRoute.of(context)!.settings.arguments as List<int>;
+    //List<int> lista = ModalRoute.of(context)!.settings.arguments as List<int>;
     //int idUser = lista[0];
-    int idValueRange = lista[1];
-    int idTestDone = lista[2];
-
+    // int idValueRange = lista[1];
+    // int idTestDone = lista[2];
+    // actualizarValores(idValueRange, idTestDone);
     String resultadoTest = "negativo";
     double? valorPersonal = 0.0;
 
-    actualizarValores(idValueRange, idTestDone);
+  
 
     ValueRangeModel valores = this.valores!;
 
@@ -143,7 +161,7 @@ class UserResults extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () =>
-                    cleanAndContinue(idValueRange, idTestDone, context),
+                    cleanAndContinue(widget.idRange, widget.idTest, context),
                 child: Text("Continuar"))
           ],
         ));

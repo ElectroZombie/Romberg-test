@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:romberg_test/db/db.dart';
+import 'package:romberg_test/frames/user_results.dart';
 import 'package:romberg_test/models/curve_point_model.dart';
 import 'package:romberg_test/models/curve_point_range_model.dart';
 import 'package:romberg_test/models/test_data_model.dart';
@@ -45,8 +46,9 @@ class RombergTestState extends State<RombergTest> {
   List<double> gzValues = List.empty(growable: true);
 
   void guardarDatos() async {
+    int x = await DB.getLastIdTestDone();
     await DB.insertDataTestDone(
-        TestDataModel(idTestDone: 1, curva: transformDataToCurvePoints()));
+        TestDataModel(idTestDone: x, curva: transformDataToCurvePoints()));
   }
 
   void exportPDF() {
@@ -386,7 +388,12 @@ class RombergTestState extends State<RombergTest> {
   }
 
   void ir(List<int> ids) {
-    Navigator.pushNamed(context, '/user_results', arguments: ids);
+    Navigator.push<void>(
+    context,
+    MaterialPageRoute<void>(
+      builder: (BuildContext context) =>  UserResults(idRange: ids[1],idTest: ids[2],),
+    ),
+  );
   }
 
   void startRecording() async {
