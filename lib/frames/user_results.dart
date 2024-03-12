@@ -5,12 +5,19 @@ import 'package:romberg_test/db/db.dart';
 import 'package:romberg_test/models/test_data_model.dart';
 import 'package:romberg_test/models/value_range_model.dart';
 import 'package:romberg_test/utils/tuple.dart';
+import 'package:romberg_test/widgets/gradient.dart';
 import 'package:romberg_test/widgets/line_chart.dart';
 
 class UserResults extends StatefulWidget {
-  int ?idRange; 
-  int ?idTest;
-  UserResults({Key? key,this.idRange,this.idTest,listaIds,}) : super(key: key);
+  int? idRange;
+  int? idTest;
+  int? idUser;
+  List<int>? listaIds;
+  UserResults({Key? key, List<int>? listaIds}) : super(key: key) {
+    idUser = listaIds?[0];
+    idRange = listaIds?[1];
+    idTest = listaIds?[2];
+  }
 
   @override
   State<UserResults> createState() => _UserResultsState();
@@ -18,30 +25,29 @@ class UserResults extends StatefulWidget {
 
 class _UserResultsState extends State<UserResults> {
   ValueRangeModel? valores;
-
   TestDataModel? datos;
 
   void actualizarValores(int idRange, int idTest) async {
-   var aux1 =await DB.getDataRange(idRange);
-   var aux2 =await DB.getDataTestDone(idTest);
-   setState(() {
-    valores = aux1;
-    datos = aux2;
-   });
-    //Si esto no funciona, lo que hay que hacer es convertir el widget en stateful, y adaptarlo, y con eso debe pinchar,
-    //porque lo que falta es que coja esos valores y los actualice
+    var aux1 = await DB.getDataRange(idRange);
+    var aux2 = await DB.getDataTestDone(idTest);
+    setState(() {
+      valores = aux1;
+      datos = aux2;
+    });
   }
 
-  cleanAndContinue(idValueRange, idTestDone, context) async {
+  cleanAndContinue(
+      int idValueRange, int idTestDone, BuildContext context) async {
     await DB.deleteDataRange(idValueRange);
     await DB.deleteTestDone(idTestDone);
+    // ignore: use_build_context_synchronously
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
+
   @override
-  void initState() { 
+  void initState() {
     actualizarValores(widget.idRange!, widget.idTest!);
     super.initState();
-    
   }
 
   Tuple<List<double>, double> actualizarPorcentaje(
@@ -88,13 +94,13 @@ class _UserResultsState extends State<UserResults> {
         totalDesalineados[5]++;
       }
     }
-    int TotalDesalineados = 0;
+    int desalineadosTotal = 0;
     for (int i = 0; i < 6; i++) {
       porcentajes[i] = (totalDesalineados[i] / valores.rangoCurva.length) * 100;
-      TotalDesalineados += totalDesalineados[i];
+      desalineadosTotal += totalDesalineados[i];
     }
     porcentajeTotal =
-        (TotalDesalineados / (valores.rangoCurva.length * 6)) / 100;
+        (desalineadosTotal / (valores.rangoCurva.length * 6)) / 100;
 
     return Tuple<List<double>, double>(
         elem1: porcentajes, elem2: porcentajeTotal);
@@ -102,35 +108,32 @@ class _UserResultsState extends State<UserResults> {
 
   @override
   Widget build(BuildContext context) {
-    //List<int> lista = ModalRoute.of(context)!.settings.arguments as List<int>;
-    //int idUser = lista[0];
-    // int idValueRange = lista[1];
-    // int idTestDone = lista[2];
-    // actualizarValores(idValueRange, idTestDone);
     String resultadoTest = "negativo";
     double? valorPersonal = 0.0;
 
-  
+    ValueRangeModel valoresCurrent = valores!;
 
-    ValueRangeModel valores = this.valores!;
+    TestDataModel datosCurrent = datos!;
 
-    TestDataModel datos = this.datos!;
-
-    Tuple<List<double>, double> tupla = actualizarPorcentaje(valores, datos);
+    Tuple<List<double>, double> tupla =
+        actualizarPorcentaje(valoresCurrent, datosCurrent);
     double porcentaje = tupla.elem2;
 
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Resultados del test"),
+          title: const Text("Resultados del test"),
+          backgroundColor: Color.fromARGB(199, 84, 209, 136),
         ),
-        body: Column(
-          children: [
-            Text("Tiempo efectivo del test"),
-            Text(datos.curva.length as String),
+        body: Stack(children: [
+          gradient(),
+          SingleChildScrollView(
+              child: Column(children: [
+            const Text("Tiempo efectivo del test"),
+            Text(datosCurrent.curva.length as String),
             Text("El resultado del test es $resultadoTest"),
             Text("Porcentaje de exito del test: ${porcentaje as String}"),
-            Text("Valoracion personal del usuario: "),
+            const Text("Valoracion personal del usuario: "),
             Slider(
               value: 0,
               onChanged: (value) {
@@ -141,29 +144,23 @@ class _UserResultsState extends State<UserResults> {
               min: 0.0,
               max: 100.0,
             ),
-            Row(
-              children: [
-                lineChartAX(valores, datos, tupla.elem1[3]),
-                lineChartGX(valores, datos, tupla.elem1[0])
-              ],
-            ),
-            Row(
-              children: [
-                lineChartAY(valores, datos, tupla.elem1[4]),
-                lineChartGY(valores, datos, tupla.elem1[1])
-              ],
-            ),
-            Row(
-              children: [
-                lineChartAZ(valores, datos, tupla.elem1[5]),
-                lineChartGZ(valores, datos, tupla.elem1[2])
-              ],
-            ),
+            Row(children: [
+              lineChartAX(valoresCurrent, datosCurrent, tupla.elem1[3]),
+              lineChartGX(valoresCurrent, datosCurrent, tupla.elem1[0])
+            ]),
+            Row(children: [
+              lineChartAY(valoresCurrent, datosCurrent, tupla.elem1[4]),
+              lineChartGY(valoresCurrent, datosCurrent, tupla.elem1[1])
+            ]),
+            Row(children: [
+              lineChartAZ(valoresCurrent, datosCurrent, tupla.elem1[5]),
+              lineChartGZ(valoresCurrent, datosCurrent, tupla.elem1[2])
+            ]),
             ElevatedButton(
                 onPressed: () =>
-                    cleanAndContinue(widget.idRange, widget.idTest, context),
-                child: Text("Continuar"))
-          ],
-        ));
+                    cleanAndContinue(widget.idRange!, widget.idTest!, context),
+                child: const Text("Continuar"))
+          ]))
+        ]));
   }
 }
