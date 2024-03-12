@@ -2,7 +2,10 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:romberg_test/models/test_data_model.dart';
 import 'package:romberg_test/models/value_range_model.dart';
-
+import 'dart:math';
+//hay errores aqui a la hora de pintar los datos 
+//no tengo ni la mas minima idea de lo q esta pasando aqui pero 
+// ya llega hasta aqui lo q no pinta nada 
 Color colorPorcentaje(double porcentaje) {
   if (porcentaje <= 40.0) {
     return Color.fromARGB(255, 59, 2, 61);
@@ -32,6 +35,7 @@ Widget lineChartAX(
 
 List<LineChartBarData> linesAX(ValueRangeModel valores, TestDataModel datos) {
   List<LineChartBarData> line = List.empty(growable: true);
+  int minLength = min(valores.rangoCurva.length, datos.curva.length);
   line.add(LineChartBarData(
       isCurved: true,
       color: Colors.amber,
@@ -40,8 +44,8 @@ List<LineChartBarData> linesAX(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: List.generate(
-          30000,
-          (i) => FlSpot(i as double,
+          minLength,
+          (i) => FlSpot(i.toDouble(),
               valores.rangoCurva[i].axi + valores.rangoCurva[i].axri))));
   line.add(LineChartBarData(
       isCurved: true,
@@ -51,8 +55,8 @@ List<LineChartBarData> linesAX(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: List.generate(
-          30000,
-          (i) => FlSpot(i as double,
+          minLength,
+          (i) => FlSpot(i.toDouble(),
               valores.rangoCurva[i].axi - valores.rangoCurva[i].axri))));
   line.add(LineChartBarData(
       isCurved: true,
@@ -62,7 +66,7 @@ List<LineChartBarData> linesAX(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots:
-          List.generate(30000, (i) => FlSpot(i as double, datos.curva[i].ax))));
+          List.generate(minLength, (i) => FlSpot(i .toDouble(), datos.curva[i].ax))));
   return line;
 }
 
@@ -73,7 +77,7 @@ Widget lineChartAY(
         minY: 0,
         maxY: 100,
         minX: 0,
-        maxX: 30000,
+        maxX: 3000,
         lineBarsData: linesAY(valores, datos)),
     curve: Curves.linear,
     duration: Duration(seconds: 5),
@@ -82,6 +86,7 @@ Widget lineChartAY(
 
 List<LineChartBarData> linesAY(ValueRangeModel valores, TestDataModel datos) {
   List<LineChartBarData> line = List.empty(growable: true);
+  int minLength = min(valores.rangoCurva.length, datos.curva.length);
   line.add(LineChartBarData(
       isCurved: true,
       color: Colors.amber,
@@ -90,8 +95,8 @@ List<LineChartBarData> linesAY(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: List.generate(
-          30000,
-          (i) => FlSpot(i as double,
+          minLength,
+          (i) => FlSpot(i.toDouble(),
               valores.rangoCurva[i].ayi + valores.rangoCurva[i].ayri))));
   line.add(LineChartBarData(
       isCurved: true,
@@ -101,8 +106,8 @@ List<LineChartBarData> linesAY(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: List.generate(
-          30000,
-          (i) => FlSpot(i as double,
+          minLength,
+          (i) => FlSpot(i.toDouble(),
               valores.rangoCurva[i].ayi - valores.rangoCurva[i].ayri))));
   line.add(LineChartBarData(
       isCurved: true,
@@ -112,7 +117,7 @@ List<LineChartBarData> linesAY(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots:
-          List.generate(30000, (i) => FlSpot(i as double, datos.curva[i].ay))));
+          List.generate(minLength, (i) => FlSpot(i .toDouble(), datos.curva[i].ay))));
   return line;
 }
 
@@ -123,7 +128,7 @@ Widget lineChartAZ(
         minY: 0,
         maxY: 100,
         minX: 0,
-        maxX: 30000,
+        maxX: 3000,
         lineBarsData: linesAZ(valores, datos)),
     curve: Curves.linear,
     duration: Duration(seconds: 5),
@@ -132,6 +137,7 @@ Widget lineChartAZ(
 
 List<LineChartBarData> linesAZ(ValueRangeModel valores, TestDataModel datos) {
   List<LineChartBarData> line = List.empty(growable: true);
+  int minLength = min(valores.rangoCurva.length, datos.curva.length);
   line.add(LineChartBarData(
       isCurved: true,
       color: Colors.amber,
@@ -140,8 +146,8 @@ List<LineChartBarData> linesAZ(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: List.generate(
-          30000,
-          (i) => FlSpot(i as double,
+          minLength,
+          (i) => FlSpot(i .toDouble(),
               valores.rangoCurva[i].azi + valores.rangoCurva[i].azri))));
   line.add(LineChartBarData(
       isCurved: true,
@@ -151,8 +157,8 @@ List<LineChartBarData> linesAZ(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: List.generate(
-          30000,
-          (i) => FlSpot(i as double,
+          minLength,
+          (i) => FlSpot(i.toDouble(),
               valores.rangoCurva[i].azi - valores.rangoCurva[i].azri))));
   line.add(LineChartBarData(
       isCurved: true,
@@ -162,7 +168,7 @@ List<LineChartBarData> linesAZ(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots:
-          List.generate(30000, (i) => FlSpot(i as double, datos.curva[i].az))));
+          List.generate(minLength, (i) => FlSpot(i .toDouble(), datos.curva[i].az))));
   return line;
 }
 
@@ -182,6 +188,7 @@ Widget lineChartGX(
 
 List<LineChartBarData> linesGX(ValueRangeModel valores, TestDataModel datos) {
   List<LineChartBarData> line = List.empty(growable: true);
+  int minLength = min(valores.rangoCurva.length, datos.curva.length);
   line.add(LineChartBarData(
       isCurved: true,
       color: Colors.amber,
@@ -190,8 +197,8 @@ List<LineChartBarData> linesGX(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: List.generate(
-          30000,
-          (i) => FlSpot(i as double,
+          minLength,
+          (i) => FlSpot(i .toDouble(),
               valores.rangoCurva[i].gxi + valores.rangoCurva[i].gxri))));
   line.add(LineChartBarData(
       isCurved: true,
@@ -201,8 +208,8 @@ List<LineChartBarData> linesGX(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: List.generate(
-          30000,
-          (i) => FlSpot(i as double,
+          minLength,
+          (i) => FlSpot(i .toDouble(),
               valores.rangoCurva[i].gxi - valores.rangoCurva[i].gxri))));
   line.add(LineChartBarData(
       isCurved: true,
@@ -212,7 +219,7 @@ List<LineChartBarData> linesGX(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots:
-          List.generate(30000, (i) => FlSpot(i as double, datos.curva[i].gx))));
+          List.generate(minLength, (i) => FlSpot(i .toDouble(), datos.curva[i].gx))));
   return line;
 }
 
@@ -223,7 +230,7 @@ Widget lineChartGY(
         minY: 0,
         maxY: 100,
         minX: 0,
-        maxX: 30000,
+        maxX: 3000,
         lineBarsData: linesGY(valores, datos)),
     curve: Curves.linear,
     duration: Duration(seconds: 5),
@@ -232,6 +239,7 @@ Widget lineChartGY(
 
 List<LineChartBarData> linesGY(ValueRangeModel valores, TestDataModel datos) {
   List<LineChartBarData> line = List.empty(growable: true);
+  int minLength = min(valores.rangoCurva.length, datos.curva.length);
   line.add(LineChartBarData(
       isCurved: true,
       color: Colors.amber,
@@ -240,8 +248,8 @@ List<LineChartBarData> linesGY(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: List.generate(
-          30000,
-          (i) => FlSpot(i as double,
+          minLength,
+          (i) => FlSpot(i .toDouble(),
               valores.rangoCurva[i].gyi + valores.rangoCurva[i].gyri))));
   line.add(LineChartBarData(
       isCurved: true,
@@ -251,8 +259,8 @@ List<LineChartBarData> linesGY(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: List.generate(
-          30000,
-          (i) => FlSpot(i as double,
+          minLength,
+          (i) => FlSpot(i .toDouble(),
               valores.rangoCurva[i].gyi - valores.rangoCurva[i].gyri))));
   line.add(LineChartBarData(
       isCurved: true,
@@ -262,7 +270,7 @@ List<LineChartBarData> linesGY(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots:
-          List.generate(30000, (i) => FlSpot(i as double, datos.curva[i].gy))));
+          List.generate(minLength, (i) => FlSpot(i .toDouble(), datos.curva[i].gy))));
   return line;
 }
 
@@ -273,7 +281,7 @@ Widget lineChartGZ(
         minY: 0,
         maxY: 100,
         minX: 0,
-        maxX: 30000,
+        maxX: 3000,
         lineBarsData: linesGZ(valores, datos)),
     curve: Curves.linear,
     duration: Duration(seconds: 5),
@@ -282,6 +290,7 @@ Widget lineChartGZ(
 
 List<LineChartBarData> linesGZ(ValueRangeModel valores, TestDataModel datos) {
   List<LineChartBarData> line = List.empty(growable: true);
+  int minLength = min(valores.rangoCurva.length, datos.curva.length);
   line.add(LineChartBarData(
       isCurved: true,
       color: Colors.amber,
@@ -290,8 +299,8 @@ List<LineChartBarData> linesGZ(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: List.generate(
-          30000,
-          (i) => FlSpot(i as double,
+          minLength,
+          (i) => FlSpot(i .toDouble(),
               valores.rangoCurva[i].gzi + valores.rangoCurva[i].gzri))));
   line.add(LineChartBarData(
       isCurved: true,
@@ -301,8 +310,8 @@ List<LineChartBarData> linesGZ(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: List.generate(
-          30000,
-          (i) => FlSpot(i as double,
+          minLength,
+          (i) => FlSpot(i .toDouble(),
               valores.rangoCurva[i].gzi - valores.rangoCurva[i].gzri))));
   line.add(LineChartBarData(
       isCurved: true,
@@ -312,6 +321,6 @@ List<LineChartBarData> linesGZ(ValueRangeModel valores, TestDataModel datos) {
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots:
-          List.generate(30000, (i) => FlSpot(i as double, datos.curva[i].gz))));
+          List.generate(minLength, (i) => FlSpot(i .toDouble(), datos.curva[i].gz))));
   return line;
 }

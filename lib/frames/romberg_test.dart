@@ -364,14 +364,14 @@ class RombergTestState extends State<RombergTest> {
     await DB.insertNewTestDone(testDone);
 
     TestDataModel testData = TestDataModel(idTestDone: testDone.idTestDone);
-    //Arreglado lo del idTestDone. Borra el comentario despues
+    
     for (var i = 1; i < gxValues.length; i++) {
       testData.insertCurvePoint(i, gxValues[i], gyValues[i], gzValues[i],
           xValues[i], yValues[i], zValues[i]);
     }
     await DB.insertDataTestDone(testData);
 
-    exportPDF();
+    //exportPDF();
     //Lo habilito para verificar con estos datos los que salgan en las graficas
 
     navigate();
