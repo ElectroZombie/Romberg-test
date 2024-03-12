@@ -106,21 +106,7 @@ class DB {
 
   static Future<void> insertNewTest(TestModel test) async {
     Database D = await _openDB();
-//     El error DatabaseException(UNIQUE constraint failed: test.id_test) indica que estás intentando insertar un valor en la columna id_test que ya existe en la base de datos, lo cual viola la restricción de unicidad de esa columna12.
-
-// Aquí hay algunas posibles soluciones:
-
-//     Verificar los datos antes de la inserción: Antes de intentar insertar datos, puedes ejecutar una comprobación en tu aplicación para asegurarte de que el valor no exista ya en la base de datos3.
-
-//     Manejar el error de manera adecuada: Cuando un error no puede ser prevenido, es importante manejarlo de manera adecuada3.
-
-//     Actualizar el esquema de la base de datos: Si no te importa generar los IDs por ti mismo, puedes agregar la configuración AUTOINCREMENT a la definición de tu columna id_test. De esta manera, se llenará automáticamente y cada fila tendrá su propio valor único2.
-
-//     Usar ConflictAlgorithm.replace: En la función de inserción de la base de datos, puedes agregar conflictAlgorithm: ConflictAlgorithm.replace. Esto reemplazará el valor único existente1.
-
-// Por favor, revisa tu código y asegúrate de que estás proporcionando un valor único para la columna id_test cuando intentas insertar datos en la tabla test. Si el problema persiste, considera consultar con un experto en Flutter o SQLite para obtener ayuda más específica.
-
-  await   D.insert('test', test.toMap());
+    await D.insert('test', test.toMap());
   }
 
   static Future<List<Tuple>> getAllTestNames() async {
@@ -145,7 +131,7 @@ class DB {
 
   static Future<void> insertNewTestDone(TestDoneModel testDoneModel) async {
     Database D = await _openDB();
-   await  D.insert('test_done', testDoneModel.toMap());
+    await D.insert('test_done', testDoneModel.toMap());
   }
 
   static Future<List<TestDoneModel>> getAllTestDoneByUser(idUser) async {
@@ -193,7 +179,6 @@ class DB {
 
   static Future<void> insertDataTestDone(TestDataModel testDataModel) async {
     Database D = await _openDB();
-//revisa bien el id q se esta usando pq creo q siempre estabas poniendo 1 y no se si el metodo q puse es el q va 
     for (int i = 0; i < testDataModel.curva.length; i++) {
       await D.rawInsert(
           "INSERT INTO data_test_done VALUES (${testDataModel.idTestDone}, ${testDataModel.curva[i].gx}, ${testDataModel.curva[i].gy}, ${testDataModel.curva[i].gz}, ${testDataModel.curva[i].ax}, ${testDataModel.curva[i].ay}, ${testDataModel.curva[i].az}, ${testDataModel.curva[i].tiempo})");
@@ -224,34 +209,20 @@ class DB {
   }
 
   static Future<int> getLastIdValueRange() async {
-  Database D = await _openDB();
-  final List<Map<String, dynamic>> Q =
-      await D.rawQuery('SELECT MAX(id_value_range) as max_id FROM value_range');
-  return List.generate(Q.length, (i) => Q[i]['max_id']).first ?? 1;
-}
+    Database D = await _openDB();
+    final List<Map<String, dynamic>> Q = await D
+        .rawQuery('SELECT MAX(id_value_range) as max_id FROM value_range');
+    return List.generate(Q.length, (i) => Q[i]['max_id']).first ?? 1;
+  }
 
   static Future<void> insertNewDataRange(ValueRangeModel valueRange) async {
     Database D = await _openDB();
 
-   await D.insert('value_range', valueRange.toMap());
-//   El error DatabaseException(UNIQUE constraint failed: value_range.id_value_range) indica que estás intentando insertar un valor en la columna id_value_range que ya existe en la base de datos, lo cual viola la restricción de unicidad de esa columna12.
-
-// Aquí hay algunas posibles soluciones:
-
-//     Verificar los datos antes de la inserción: Antes de intentar insertar datos, puedes ejecutar una comprobación en tu aplicación para asegurarte de que el valor no exista ya en la base de datos3.
-
-//     Manejar el error de manera adecuada: Cuando un error no puede ser prevenido, es importante manejarlo de manera adecuada3.
-
-//     Actualizar el esquema de la base de datos: Si no te importa generar los IDs por ti mismo, puedes agregar la configuración AUTOINCREMENT a la definición de tu columna id_value_range. De esta manera, se llenará automáticamente y cada fila tendrá su propio valor único2.
-
-//     Usar ConflictAlgorithm.replace: En la función de inserción de la base de datos, puedes agregar conflictAlgorithm: ConflictAlgorithm.replace. Esto reemplazará el valor único existente2.
-
-// Por favor, revisa tu código y asegúrate de que estás proporcionando un valor único para la columna id_value_range cuando intentas insertar datos en la tabla value_range. Si el problema persiste, considera consultar con un experto en Flutter o SQLite para obtener ayuda más específica.
-
+    await D.insert('value_range', valueRange.toMap());
     int id = await getLastIdValueRange();
 
     for (int i = 0; i < valueRange.rangoCurva.length; i++) {
-     await  D.rawInsert(
+      await D.rawInsert(
           "INSERT INTO value_range_data VALUES ($id, $i, ${valueRange.rangoCurva[i].gxi}, ${valueRange.rangoCurva[i].gxri}, ${valueRange.rangoCurva[i].gyi}, ${valueRange.rangoCurva[i].gyri}, ${valueRange.rangoCurva[i].gzi}, ${valueRange.rangoCurva[i].gzri}, ${valueRange.rangoCurva[i].axi}, ${valueRange.rangoCurva[i].axri}, ${valueRange.rangoCurva[i].ayi}, ${valueRange.rangoCurva[i].ayri}, ${valueRange.rangoCurva[i].azi}, ${valueRange.rangoCurva[i].azri})");
     }
   }

@@ -7,6 +7,7 @@ import 'package:romberg_test/models/curve_point_range_model.dart';
 import 'package:romberg_test/models/test_data_model.dart';
 import 'package:romberg_test/models/test_done_model.dart';
 import 'package:romberg_test/models/value_range_model.dart';
+import 'package:romberg_test/widgets/gradient.dart';
 import 'package:sensors/sensors.dart';
 
 import 'package:romberg_test/utils/pdf_actions.dart';
@@ -213,7 +214,7 @@ class RombergTestState extends State<RombergTest> {
           "Calibrando los datos. Mantenga la posicion de Romberg con los ojos abiertos";
     });
 
-    Timer.periodic(Duration(milliseconds: 10), (Timer timer) {
+    Timer.periodic(const Duration(milliseconds: 10), (Timer timer) {
       setState(() {
         _timerSeconds -= 0.01; // Restamos 0.01 segundos (10 milisegundos)
         if (_timerSeconds <= 0) {
@@ -270,11 +271,11 @@ class RombergTestState extends State<RombergTest> {
   }
 
   reproducirAudio() async {
-    // final player = AudioPlayer();
-    // final duration = await player.setUrl('/assets/audio1.mp3');
-    // await player.play();
-    // player.stop();
-//el audio no pincha no tengo idea pq creo q el errore esta en q no encuentra el audio
+    //Hay que probar las dependiencias de audio:
+    //just_audio
+    //audioplayers
+    //soundpool
+    //para ver cual funciona, si es que funciona alguna
   }
 
   Future<void> tiempoEspera() async {
@@ -353,12 +354,8 @@ class RombergTestState extends State<RombergTest> {
   }
 
   Future<void> guardarDatosTest() async {
-    // TestModel test = TestModel(id: 1, name: "Test1", time: 30);
-    // await DB.insertNewTest(test);
-
     TestDoneModel testDone = TestDoneModel(
         idTestDone: (await DB.getLastIdTestDone()) + 1,
-        //aqui saco primero el ultimo id de test hechos, y le sumo 1. Esto deberia resolver los problemas de base de datos
         idTest: 1,
         idUser: 1,
         valorUser: 100,
@@ -366,14 +363,16 @@ class RombergTestState extends State<RombergTest> {
 
     await DB.insertNewTestDone(testDone);
 
-    TestDataModel testData = TestDataModel(idTestDone: 1);
+    TestDataModel testData = TestDataModel(idTestDone: testDone.idTestDone);
+    //Arreglado lo del idTestDone. Borra el comentario despues
     for (var i = 1; i < gxValues.length; i++) {
       testData.insertCurvePoint(i, gxValues[i], gyValues[i], gzValues[i],
           xValues[i], yValues[i], zValues[i]);
     }
     await DB.insertDataTestDone(testData);
 
-    // exportPDF();
+    exportPDF();
+    //Lo habilito para verificar con estos datos los que salgan en las graficas
 
     navigate();
   }
@@ -382,18 +381,16 @@ class RombergTestState extends State<RombergTest> {
     int idtestDone = await DB.getLastIdTestDone();
     int idRange = await DB.getLastIdValueRange();
     List<int> ids = [1, idRange, idtestDone];
-    //no se q significa ese 1 en los ids.
-    //R:Es pal usuario, que ahora no hace falta, por eso lo paso generico
     ir(ids);
   }
 
   void ir(List<int> ids) {
     Navigator.push<void>(
-    context,
-    MaterialPageRoute<void>(
-      builder: (BuildContext context) =>  UserResults(idRange: ids[1],idTest: ids[2],),
-    ),
-  );
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => UserResults(listaIds: ids),
+      ),
+    );
   }
 
   void startRecording() async {
@@ -403,37 +400,42 @@ class RombergTestState extends State<RombergTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Romberg Test'),
-        leading: BackButtonIcon(),
-      ),
-      //drawer: drawer(context),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(199, 84, 209, 136),
+          title: const Text('Romberg Test'),
+          leading: const BackButtonIcon(),
+        ),
+        //drawer: drawer(context),
+        body: Stack(
           children: [
-            if (_isRecording)
-              Column(
+            gradient(),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Tiempo restante: ${_timerSeconds.toStringAsFixed(2)} segundos',
-                    style: TextStyle(fontSize: 24),
-                  ),
+                  if (_isRecording)
+                    Column(
+                      children: [
+                        Text(
+                          'Tiempo restante: ${_timerSeconds.toStringAsFixed(2)} segundos',
+                          style: const TextStyle(fontSize: 24),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          mensaje,
+                          style: const TextStyle(fontSize: 24),
+                        ),
+                      ],
+                    ),
                   const SizedBox(height: 20),
-                  Text(
-                    mensaje,
-                    style: TextStyle(fontSize: 24),
+                  ElevatedButton(
+                    onPressed: () => startRecording(),
+                    child: const Text('Comenzar Test'),
                   ),
                 ],
               ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => startRecording(),
-              child: Text('Comenzar Test'),
             ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 }
