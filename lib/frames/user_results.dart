@@ -103,11 +103,11 @@ class _UserResultsState extends State<UserResults> {
     }
     double desalineadosTotal = 0;
     for (int i = 0; i < 6; i++) {
-      porcentajes[i] = (totalDesalineados[i] / valores.rangoCurva.length) * 100;
+      porcentajes[i] = 100 -  (totalDesalineados[i] / valores.rangoCurva.length) * 100;
       desalineadosTotal += totalDesalineados[i];
     }
-    porcentajeTotal =
-        (desalineadosTotal / (valores.rangoCurva.length * 6)) / 100;
+    porcentajeTotal = 100 - 
+        (desalineadosTotal / (valores.rangoCurva.length * 6)) * 100;
 
     setState(() {
       tupla = Tuple<List<double>, double>(
