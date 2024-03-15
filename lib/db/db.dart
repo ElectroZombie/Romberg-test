@@ -172,9 +172,9 @@ class DB {
   static Future<void> deleteTestDone(idTestDone) async {
     Database D = await _openDB();
 
-    D.delete('data_test_done',
-        where: 'id_test_done = ?', whereArgs: idTestDone);
-    D.delete('test_done', where: 'id_test_done = ?', whereArgs: idTestDone);
+   await D.delete('data_test_done',
+        where: 'id_test_done = ?', whereArgs: [idTestDone]);
+   await D.delete('test_done', where: 'id_test_done = ?', whereArgs: [idTestDone]);
   }
 
   static Future<void> insertDataTestDone(TestDataModel testDataModel) async {
@@ -227,10 +227,10 @@ class DB {
     }
   }
 
-  static Future<void> deleteDataRange(id) async {
+  static Future<void> deleteDataRange(int id) async {
     Database D = await _openDB();
-    D.delete('value_range_data', where: 'value_range_id = ?', whereArgs: id);
-    D.delete('value_range', where: 'value_range_id = ?', whereArgs: id);
+    await D.delete('value_range_data', where: 'id_value_range = ?', whereArgs: [id]);
+    await D.delete('value_range', where: 'id_value_range = ?', whereArgs: [id]);
   }
 
   static Future<ValueRangeModel> getDataRange(int id) async {
