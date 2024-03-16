@@ -68,6 +68,7 @@ class _UserResultsState extends State<UserResults> {
           datos.curva[i].gx >
               (valores.rangoCurva[i].gxi + valores.rangoCurva[i].gxri)) {
         totalDesalineados[0]++;
+       
       }
       if (datos.curva[i].gy <
               (valores.rangoCurva[i].gyi - valores.rangoCurva[i].gyri) ||
@@ -105,9 +106,11 @@ class _UserResultsState extends State<UserResults> {
       porcentajes[i] =
           100 - (totalDesalineados[i] / valores.rangoCurva.length) * 100;
       desalineadosTotal += totalDesalineados[i];
+      print(desalineadosTotal);
     }
     porcentajeTotal =
         100 - (desalineadosTotal / (valores.rangoCurva.length * 6)) * 100;
+        print(porcentajeTotal);
 
     setState(() {
       tupla = Tuple<List<double>, double>(
@@ -153,42 +156,43 @@ class _UserResultsState extends State<UserResults> {
               body: Stack(children: [
                 gradient(),
                 SingleChildScrollView(
-                    child: Center(
-                  child: Column(children: [
-                    const Text("Tiempo efectivo del test"),
-                    Text("${datos!.curva.length}"),
-                    Text("El resultado del test es $resultadoTest"),
-                    Text("Porcentaje de exito del test: ${tupla!.elem2}"),
-                    const Text("Valoracion personal del usuario: "),
-                    // Slider(
-                    //   value: 0,
-                    //   onChanged: (value) {
-                    //     valorPersonal = value;
-                    //   },
-                    //   divisions: 3,
-                    //   allowedInteraction: SliderInteraction.tapAndSlide,
-                    //   min: 0.0,
-                    //   max: 100.0,
-                    // ),
-                    /*  Row(children: [
-                      lineChartAX(valores!, datos!, tupla!.elem1[3]),
-                      lineChartGX(valores!, datos!, tupla!.elem1[0])
-                                        ]),
-                                        Row(children: [
-                      lineChartAY(valores!, datos!, tupla!.elem1[4]),
-                      lineChartGY(valores!, datos!, tupla!.elem1[1])
-                                        ]),
-                                        Row(children: [
-                      lineChartAZ(valores!, datos!, tupla!.elem1[5]),
-                      lineChartGZ(valores!, datos!, tupla!.elem1[2])
-                                        ]),*/
-                    //Por ahora vamos a ignorar los graficos. Para ver si el resto funciona bien
-                    ElevatedButton(
-                        onPressed: () => cleanAndContinue(
-                            widget.idRange!, widget.idTest!, context),
-                        child: const Text("Continuar"))
-                  ]),
-                ))
+                    child: Column(
+                      
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                      const Text("Tiempo efectivo del test"),
+                      const Text("30"),
+                      Text("El resultado del test es $resultadoTest"),
+                      Text("Porcentaje de exito del test: ${tupla!.elem2}"),
+                     // const Text("Valoracion personal del usuario: "),
+                      // Slider(
+                      //   value: 0,
+                      //   onChanged: (value) {
+                      //     valorPersonal = value;
+                      //   },
+                      //   divisions: 3,
+                      //   allowedInteraction: SliderInteraction.tapAndSlide,
+                      //   min: 0.0,
+                      //   max: 100.0,
+                      // ),
+                      /*  Row(children: [
+                        lineChartAX(valores!, datos!, tupla!.elem1[3]),
+                        lineChartGX(valores!, datos!, tupla!.elem1[0])
+                                          ]),
+                                          Row(children: [
+                        lineChartAY(valores!, datos!, tupla!.elem1[4]),
+                        lineChartGY(valores!, datos!, tupla!.elem1[1])
+                                          ]),
+                                          Row(children: [
+                        lineChartAZ(valores!, datos!, tupla!.elem1[5]),
+                        lineChartGZ(valores!, datos!, tupla!.elem1[2])
+                                          ]),*/
+                      //Por ahora vamos a ignorar los graficos. Para ver si el resto funciona bien
+                      ElevatedButton(
+                          onPressed: () => cleanAndContinue(
+                              widget.idRange!, widget.idTest!, context),
+                          child: const Text("Continuar"))
+                    ]))
               ]));
         }
       },

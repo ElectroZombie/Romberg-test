@@ -261,7 +261,7 @@ class RombergTestState extends State<RombergTest> {
         minimumHeight: 1,
         maximumHeight: 1);
 
-    for (var i = 0; i < _minimo-1*5; i++) {
+    for (var i = 0; i < (_minimo-1)*5; i++) {
       double promgx = gxValues[gxValues.length - 1] / gxValues.length;
       double promgy = gyValues[gyValues.length - 1] / gyValues.length;
       double promgz = gzValues[gzValues.length - 1] / gzValues.length;
@@ -269,7 +269,7 @@ class RombergTestState extends State<RombergTest> {
       double promay = yValues[yValues.length - 1] / yValues.length;
       double promaz = zValues[zValues.length - 1] / zValues.length;
 
-      if (i - _minimo <= 0) {
+      if (i - (_minimo-1) <= 0) {
         rangoValores.insertRangePoint(CurvePointRangeModel(
           i: i,
           gxi: gxValues[i],
