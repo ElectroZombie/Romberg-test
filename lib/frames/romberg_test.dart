@@ -223,12 +223,12 @@ class RombergTestState extends State<RombergTest> {
           _guardarValores();
           tiempoEspera();
         } else if (_isRecording) {
-          xValues.add(xValues[xValues.length-1]+_accelerometerValues.x);
-          yValues.add(yValues[yValues.length-1]+_accelerometerValues.y);
-          zValues.add(zValues[zValues.length-1]+_accelerometerValues.z);
-          gxValues.add(gxValues[gxValues.length-1]+_gyroscopeValues.x);
-          gyValues.add[gyValues[gyValues.length-1]+_gyroscopeValues.y);
-          gzValues.add(gzValues[gzValues.length-1]+_gyroscopeValues.z);
+          xValues.add(xValues[xValues.length - 1] + _accelerometerValues.x);
+          yValues.add(yValues[yValues.length - 1] + _accelerometerValues.y);
+          zValues.add(zValues[zValues.length - 1] + _accelerometerValues.z);
+          gxValues.add(gxValues[gxValues.length - 1] + _gyroscopeValues.x);
+          gyValues.add(gyValues[gyValues.length - 1] + _gyroscopeValues.y);
+          gzValues.add(gzValues[gzValues.length - 1] + _gyroscopeValues.z);
         }
       });
     });
@@ -250,51 +250,47 @@ class RombergTestState extends State<RombergTest> {
         minimumHeight: 1,
         maximumHeight: 1);
 
-    for (var i = 1; i < gxValues.length*3; i++) {
+    for (var i = 1; i < gxValues.length * 3; i++) {
+      double promgx = gxValues[gxValues.length - 1] / gxValues.length;
+      double promgy = gyValues[gyValues.length - 1] / gyValues.length;
+      double promgz = gzValues[gzValues.length - 1] / gzValues.length;
+      double promax = xValues[xValues.length - 1] / xValues.length;
+      double promay = yValues[yValues.length - 1] / yValues.length;
+      double promaz = zValues[zValues.length - 1] / zValues.length;
 
-double promgx = gxValues[gxValues.length-1]/gxValues.length;
-double promgy = gyValues[gyValues.length-1]/gyValues.length;
-double promgz = gzValues[gzValues.length-1]/gzValues.length;
-double promax = axValues[axValues.length-1]/axValues.length;
-double promay = ayValues[ayValues.length-1]/ayValues.length;
-double promaz = azValues[azValues.length-1]/azValues.length;
-
-if(i-gxValues.length){
-      rangoValores.insertRangePoint(CurvePointRangeModel(
-        i: i,
-        gxi: gxValues[i],
-        gxri: (gxMaxValue! - gxMinValue!) / 2.0,
-        gyi: gyValues[i],
-        gyri: (gyMaxValue! - gyMinValue!) / 2.0,
-        gzi: gzValues[i],
-        gzri: (gzMaxValue! - gzMinValue!) / 2.0,
-        axi: xValues[i],
-        axri: (xMaxValue! - xMinValue!) / 2.0,
-        ayi: yValues[i],
-        ayri: (yMaxValue! - yMinValue!) / 2.0,
-        azi: zValues[i],
-        azri: (zMaxValue! - zMinValue!) / 2.0,
-      ));
-}
-else{
-
-rangoValores.insertRangePoint(CurvePointRangeModel(
-        i: i,
-        gxi: gxValues[i-1]+promgx,
-        gxri: (gxMaxValue! - gxMinValue!) / 2.0,
-        gyi: gyValues[i-1]+promgy,
-        gyri: (gyMaxValue! - gyMinValue!) / 2.0,
-        gzi: gzValues[i-1]+promgz,
-        gzri: (gzMaxValue! - gzMinValue!) / 2.0,
-        axi: xValues[i-1]+promax,
-        axri: (xMaxValue! - xMinValue!) / 2.0,
-        ayi: yValues[i-1]+promay,
-        ayri: (yMaxValue! - yMinValue!) / 2.0,
-        azi: zValues[i-1]+promaz,
-        azri: (zMaxValue! - zMinValue!) / 2.0,
-      ));
-
-}
+      if (i - gxValues.length <= 0) {
+        rangoValores.insertRangePoint(CurvePointRangeModel(
+          i: i,
+          gxi: gxValues[i],
+          gxri: (gxMaxValue! - gxMinValue!) / 2.0,
+          gyi: gyValues[i],
+          gyri: (gyMaxValue! - gyMinValue!) / 2.0,
+          gzi: gzValues[i],
+          gzri: (gzMaxValue! - gzMinValue!) / 2.0,
+          axi: xValues[i],
+          axri: (xMaxValue! - xMinValue!) / 2.0,
+          ayi: yValues[i],
+          ayri: (yMaxValue! - yMinValue!) / 2.0,
+          azi: zValues[i],
+          azri: (zMaxValue! - zMinValue!) / 2.0,
+        ));
+      } else {
+        rangoValores.insertRangePoint(CurvePointRangeModel(
+          i: i,
+          gxi: gxValues[i - 1] + promgx,
+          gxri: (gxMaxValue! - gxMinValue!) / 2.0,
+          gyi: gyValues[i - 1] + promgy,
+          gyri: (gyMaxValue! - gyMinValue!) / 2.0,
+          gzi: gzValues[i - 1] + promgz,
+          gzri: (gzMaxValue! - gzMinValue!) / 2.0,
+          axi: xValues[i - 1] + promax,
+          axri: (xMaxValue! - xMinValue!) / 2.0,
+          ayi: yValues[i - 1] + promay,
+          ayri: (yMaxValue! - yMinValue!) / 2.0,
+          azi: zValues[i - 1] + promaz,
+          azri: (zMaxValue! - zMinValue!) / 2.0,
+        ));
+      }
     }
     await DB.insertNewDataRange(rangoValores);
   }
@@ -367,12 +363,12 @@ rangoValores.insertRangePoint(CurvePointRangeModel(
 
           _guardarDatosTest();
         } else if (_isRecording) {
-          xValues.add(xValues[xValues.length-1]+_accelerometerValues.x);
-          yValues.add(yValues[yValues.length-1]+_accelerometerValues.y);
-          zValues.add(zValues[zValues.length-1]+_accelerometerValues.z);
-          gxValues.add(gxValues[gxValues.length-1]+_gyroscopeValues.x);
-          gyValues.add[gyValues[gyValues.length-1]+_gyroscopeValues.y);
-          gzValues.add(gzValues[gzValues.length-1]+_gyroscopeValues.z);
+          xValues.add(xValues[xValues.length - 1] + _accelerometerValues.x);
+          yValues.add(yValues[yValues.length - 1] + _accelerometerValues.y);
+          zValues.add(zValues[zValues.length - 1] + _accelerometerValues.z);
+          gxValues.add(gxValues[gxValues.length - 1] + _gyroscopeValues.x);
+          gyValues.add(gyValues[gyValues.length - 1] + _gyroscopeValues.y);
+          gzValues.add(gzValues[gzValues.length - 1] + _gyroscopeValues.z);
         }
       });
     });
@@ -393,7 +389,7 @@ rangoValores.insertRangePoint(CurvePointRangeModel(
     await DB.insertNewTestDone(testDone);
 
     TestDataModel testData = TestDataModel(idTestDone: testDone.idTestDone);
-    
+
     for (var i = 1; i < gxValues.length; i++) {
       testData.insertCurvePoint(i, gxValues[i], gyValues[i], gzValues[i],
           xValues[i], yValues[i], zValues[i]);
