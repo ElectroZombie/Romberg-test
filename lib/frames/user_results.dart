@@ -6,7 +6,7 @@ import 'package:romberg_test/models/test_data_model.dart';
 import 'package:romberg_test/models/value_range_model.dart';
 import 'package:romberg_test/utils/tuple.dart';
 import 'package:romberg_test/widgets/gradient.dart';
-import 'package:romberg_test/widgets/line_chart.dart';
+//import 'package:romberg_test/widgets/line_chart.dart';
 
 class UserResults extends StatefulWidget {
   int? idRange;
@@ -53,6 +53,7 @@ class _UserResultsState extends State<UserResults> {
       int idValueRange, int idTestDone, BuildContext context) async {
     await DB.deleteDataRange(idValueRange);
     await DB.deleteTestDone(idTestDone);
+    // ignore: use_build_context_synchronously
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 
@@ -68,7 +69,6 @@ class _UserResultsState extends State<UserResults> {
           datos.curva[i].gx >
               (valores.rangoCurva[i].gxi + valores.rangoCurva[i].gxri)) {
         totalDesalineados[0]++;
-       
       }
       if (datos.curva[i].gy <
               (valores.rangoCurva[i].gyi - valores.rangoCurva[i].gyri) ||
@@ -106,11 +106,11 @@ class _UserResultsState extends State<UserResults> {
       porcentajes[i] =
           100 - (totalDesalineados[i] / valores.rangoCurva.length) * 100;
       desalineadosTotal += totalDesalineados[i];
-      print(desalineadosTotal);
+      // print(desalineadosTotal);
     }
     porcentajeTotal =
         100 - (desalineadosTotal / (valores.rangoCurva.length * 6)) * 100;
-        print(porcentajeTotal);
+    //print(porcentajeTotal);
 
     setState(() {
       tupla = Tuple<List<double>, double>(
@@ -145,7 +145,7 @@ class _UserResultsState extends State<UserResults> {
             ),
           ); // Muestra un indicador de carga mientras se espera.
         } else {
-          double? valorPersonal = 0.0;
+          //double? valorPersonal = 0.0;
 
           return Scaffold(
               appBar: AppBar(
@@ -157,14 +157,13 @@ class _UserResultsState extends State<UserResults> {
                 gradient(),
                 SingleChildScrollView(
                     child: Column(
-                      
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
                       const Text("Tiempo efectivo del test"),
                       const Text("30"),
                       Text("El resultado del test es $resultadoTest"),
                       Text("Porcentaje de exito del test: ${tupla!.elem2}"),
-                     // const Text("Valoracion personal del usuario: "),
+                      // const Text("Valoracion personal del usuario: "),
                       // Slider(
                       //   value: 0,
                       //   onChanged: (value) {
