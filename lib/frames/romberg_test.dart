@@ -225,6 +225,7 @@ class RombergTestState extends State<RombergTest> {
           _guardarValores();
           tiempoEspera();
         } else if (_isRecording) {
+
           if (xValues.isNotEmpty && gxValues.isNotEmpty) {
             xValues.add(xValues[xValues.length-1] + _accelerometerValues.x);
             yValues.add(yValues[yValues.length-1] + _accelerometerValues.y);
@@ -240,6 +241,7 @@ class RombergTestState extends State<RombergTest> {
             gyValues.add(_gyroscopeValues.y);
             gzValues.add(_gyroscopeValues.z);
           }
+
         }
       });
     });
@@ -261,7 +263,9 @@ class RombergTestState extends State<RombergTest> {
         minimumHeight: 1,
         maximumHeight: 1);
 
+
     for (var i = 0; i < (_minimo-1)*5; i++) {
+
       double promgx = gxValues[gxValues.length - 1] / gxValues.length;
       double promgy = gyValues[gyValues.length - 1] / gyValues.length;
       double promgz = gzValues[gzValues.length - 1] / gzValues.length;
@@ -270,6 +274,7 @@ class RombergTestState extends State<RombergTest> {
       double promaz = zValues[zValues.length - 1] / zValues.length;
 
       if (i - (_minimo-1) <= 0) {
+
         rangoValores.insertRangePoint(CurvePointRangeModel(
           i: i,
           gxi: gxValues[i],
@@ -288,6 +293,7 @@ class RombergTestState extends State<RombergTest> {
       } else {
         rangoValores.insertRangePoint(CurvePointRangeModel(
           i: i,
+
           gxi: rangoValores.rangoCurva[i-1].gxi+promgx,
           gxri: (gxMaxValue! - gxMinValue!) / 2.0,
           gyi: rangoValores.rangoCurva[i-1].gyi+promgy,
@@ -299,6 +305,7 @@ class RombergTestState extends State<RombergTest> {
           ayi: rangoValores.rangoCurva[i-1].ayi+promay,
           ayri: (yMaxValue! - yMinValue!) / 2.0,
           azi: rangoValores.rangoCurva[i-1].azi+promaz,
+
           azri: (zMaxValue! - zMinValue!) / 2.0,
         ));
       }
@@ -374,6 +381,7 @@ class RombergTestState extends State<RombergTest> {
 
           _guardarDatosTest();
         } else if (_isRecording) {
+
           if (xValues.isNotEmpty && gxValues.isNotEmpty) {
             xValues.add(xValues[xValues.length - 1] + _accelerometerValues.x);
             yValues.add(yValues[yValues.length - 1] + _accelerometerValues.y);
@@ -389,6 +397,7 @@ class RombergTestState extends State<RombergTest> {
             gyValues.add(_gyroscopeValues.y);
             gzValues.add(_gyroscopeValues.z);
           }
+
         }
       });
     });
@@ -411,6 +420,7 @@ class RombergTestState extends State<RombergTest> {
     TestDataModel testData = TestDataModel(idTestDone: testDone.idTestDone);
 
     for (var i = 0; i < min(gxValues.length, xValues.length); i++) {
+
       testData.insertCurvePoint(i, gxValues[i], gyValues[i], gzValues[i],
           xValues[i], yValues[i], zValues[i]);
     }
