@@ -6,6 +6,14 @@ import 'dart:math';
 //hay errores aqui a la hora de pintar los datos 
 //no tengo ni la mas minima idea de lo q esta pasando aqui pero 
 // ya llega hasta aqui lo q no pinta nada 
+//ERRORES
+// ════════ Exception caught by rendering library ═════════════════════════════════
+// RenderBox was not laid out: RenderTransform#4110f relayoutBoundary=up3 NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+// 'package:flutter/src/rendering/box.dart':
+// Failed assertion: line 1972 pos 12: 'hasSize'
+
+// ════════ Exception caught by gestures library ══════════════════════════════════
+// Cannot hit test a render box that has never been laid out.
 Color colorPorcentaje(double porcentaje) {
   if (porcentaje <= 40.0) {
     return Color.fromARGB(255, 59, 2, 61);
