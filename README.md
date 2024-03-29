@@ -20,11 +20,11 @@ Dart SDK: 3.1.0
 
 Construido con:
 -
- Flutter SDK: 3.13.0
+Flutter SDK: 3.13.0
  
- Android SDK: 31.0.0
+Android SDK: 31.0.0
 
- Code-OSS: 1.86.0
+Code-OSS: 1.86.0
 
 ------------------------------------------------------------------
 A mobile application to support the user in carrying out the Romberg test
@@ -49,6 +49,6 @@ Built on:
 -
 Flutter SDK: 3.13.0
  
- Android SDK: 31.0.0
+Android SDK: 31.0.0
 
- Code-OSS: 1.86.0
+Code-OSS: 1.86.0
